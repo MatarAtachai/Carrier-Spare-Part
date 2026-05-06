@@ -50,9 +50,10 @@
     <nav class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-2">
-                    <div class="text-3xl font-bold text-carrier-blue tracking-tighter uppercase">Carrier</div>
-                    <div class="h-8 w-px bg-gray-300 mx-2"></div>
+                <div class="flex items-center gap-2 md:gap-4">
+                    <!-- โลโก้ Carrier แบบรูปภาพ -->
+                    <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-8 md:h-10 w-auto object-contain">
+                    <div class="h-8 w-px bg-gray-300 mx-1 md:mx-2"></div>
                     <div class="text-sm font-medium text-slate-500 leading-tight">ระบบค้นหา<br>ราคาอะไหล่</div>
                 </div>
                 <!-- ลบเมนูนำทาง (หน้าแรก, ผลิตภัณฑ์ ฯลฯ) ออกตามคำขอ -->
@@ -161,8 +162,9 @@
                             <th class="p-4 font-medium min-w-[200px]">Description</th>
                             <th class="p-4 font-medium">Series Name</th>
                             <th class="p-4 font-medium">Model</th>
+                            <th class="p-4 font-medium">Common</th>
                             <th class="p-4 font-medium text-center">Type</th>
-                            <th class="p-4 font-medium text-right">ราคาแนะนำ</th>
+                            <th class="p-4 font-medium text-right">Recommended Price</th>
                         </tr>
                     </thead>
                     <tbody id="resultsTableBody" class="divide-y divide-slate-100">
@@ -191,7 +193,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <div class="text-2xl font-bold text-white tracking-tighter uppercase mb-4">Carrier</div>
+                    <!-- อัปเดตโลโก้ส่วน Footer ให้สอดคล้องกัน (ใช้ Filter สีขาวเพื่อให้เข้ากับพื้นหลังมืด) -->
+                    <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-10 w-auto object-contain mb-4 filter brightness-0 invert">
                     <p class="text-sm text-slate-400 mb-4">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด<br>
                     ผู้นำด้านนวัตกรรมความเย็น เพื่อชีวิตที่ดียิ่งขึ้น</p>
                 </div>
@@ -226,7 +229,7 @@
         // ---------------------------------------------------------
         // GOOGLE SHEETS API CONFIGURATION
         // ---------------------------------------------------------
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqQQ95qMr_dQFbuwzlHBqkbg5QvTPWDnhzB3oBUVTyopam3TB8zjyyQPtl5PnZmNON/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbygHQloocFiJ5i5qsC8giQbDfrzDaS70Eh-hMT0M0Wdppp0CKW5DjpKmAdq9YG9jqMX/exec'; 
         
         let allData = []; // เก็บข้อมูลทั้งหมด
 
@@ -323,6 +326,9 @@
                     <td class="p-3 align-middle text-slate-600 whitespace-nowrap text-sm">
                         ${item.model || '-'}
                     </td>
+                    <td class="p-3 align-middle text-slate-600 text-sm">
+                        ${item.common ? `<span class="bg-gray-50 text-gray-700 px-2.5 py-1 rounded-md border border-gray-200 inline-block whitespace-normal break-words max-w-[200px]">${item.common}</span>` : '-'}
+                    </td>
                     <td class="p-3 align-middle text-center">
                         <span class="px-2.5 py-1 ${typeBadgeColor} text-xs rounded-md border font-medium">
                             ${item.fcu_cdu || '-'}
@@ -385,7 +391,8 @@
                 const matchText = (item.description && item.description.toLowerCase().includes(query)) || 
                                   (item.partNo && item.partNo.toLowerCase().includes(query)) || 
                                   (item.model && item.model.toLowerCase().includes(query)) ||
-                                  (item.seriesName && item.seriesName.toLowerCase().includes(query));
+                                  (item.seriesName && item.seriesName.toLowerCase().includes(query)) ||
+                                  (item.common && item.common.toLowerCase().includes(query)); // รองรับการค้นหาจาก Common
                 
                 const matchType = filterType === 'ALL' || item.fcu_cdu === filterType;
 
