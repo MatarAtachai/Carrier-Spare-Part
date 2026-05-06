@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ค้นหาราคาอะไหล่แท้ - Carrier Thailand</title>
+    <!-- Tailwind CSS for Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        carrier: {
+                            blue: '#0033a0',
+                            lightblue: '#005eb8',
+                            dark: '#0f172a',
+                            gray: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        /* Custom Scrollbar for results */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="text-3xl font-bold text-carrier-blue tracking-tighter uppercase">Carrier</div>
+                    <div class="h-8 w-px bg-gray-300 mx-2"></div>
+                    <div class="text-sm font-medium text-slate-500 leading-tight">ระบบค้นหา<br>ราคาอะไหล่</div>
+                </div>
+                <!-- ลบเมนูนำทาง (หน้าแรก, ผลิตภัณฑ์ ฯลฯ) ออกตามคำขอ -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Search Section -->
+    <div class="bg-carrier-blue relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,0 Q50,100 100,0 V100 H0 Z" fill="white"></path>
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">ค้นหาราคาและสต็อกอะไหล่แท้ Carrier</h1>
+                <p class="text-blue-100 mb-8">กรอกรหัสอะไหล่, ชื่ออะไหล่ หรือ รุ่นเครื่องปรับอากาศ เพื่อค้นหาข้อมูลล่าสุด</p>
+                
+                <!-- Search Box -->
+                <div class="glass-panel p-2 md:p-3 rounded-2xl shadow-xl flex flex-col md:flex-row gap-2 md:gap-0 relative z-20 transition-all duration-300 focus-within:ring-4 focus-within:ring-blue-400/30">
+                    <div class="flex-1 flex items-center px-4 bg-white rounded-xl md:rounded-r-none md:rounded-l-xl">
+                        <i data-lucide="search" class="text-slate-400 w-5 h-5"></i>
+                        <input type="text" id="searchInput" placeholder="ค้นหา รหัสอะไหล่ (Part No.), รุ่น (Model), หรือซีรีส์..." 
+                               class="w-full py-4 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400"
+                               autocomplete="off">
+                        <button id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- เพิ่มกล่อง Filter เลือกประเภท FCU / CDU -->
+                    <div class="w-full md:w-48 bg-white md:border-l border-slate-200 px-2 flex items-center md:rounded-none rounded-xl">
+                        <select id="typeFilter" class="w-full py-4 px-2 outline-none text-slate-600 bg-transparent cursor-pointer font-medium">
+                            <option value="ALL">ทุกประเภท</option>
+                            <option value="FCU">FCU (คอยล์เย็น)</option>
+                            <option value="CDU">CDU (คอยล์ร้อน)</option>
+                        </select>
+                    </div>
+
+                    <button id="searchBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-4 px-8 rounded-xl md:rounded-l-none md:rounded-none border-r border-blue-400 transition-colors flex items-center justify-center gap-2">
+                        <span>ค้นหา</span>
+                    </button>
+                    <!-- เพิ่มปุ่มรีเฟรชข้อมูล -->
+                    <button id="refreshBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-4 px-5 rounded-xl md:rounded-l-none md:rounded-r-xl transition-colors flex items-center justify-center group" title="โหลดข้อมูลล่าสุดจากฐานข้อมูล">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500"></i>
+                    </button>
+                </div>
+
+                <div class="mt-4 text-sm text-blue-200 flex items-center justify-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                    <span>คำแนะนำ: หากไม่ทราบรหัสอะไหล่ สามารถค้นหาจากชื่อรุ่นแอร์ได้</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content: Results -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full relative -mt-8 z-20">
+        
+        <!-- Results Header -->
+        <div class="bg-white rounded-t-2xl p-6 shadow-sm border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h2 class="text-xl font-semibold text-slate-800">ผลการค้นหา</h2>
+                <p class="text-sm text-slate-500 mt-1">พบรายการอะไหล่ <span id="resultCount" class="font-bold text-carrier-blue">0</span> รายการ</p>
+            </div>
+        </div>
+
+        <!-- Results Table Container -->
+        <div class="bg-white rounded-b-2xl p-6 shadow-sm min-h-[400px]">
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden flex-col items-center justify-center py-20">
+                <i data-lucide="loader-2" class="w-10 h-10 text-carrier-lightblue animate-spin mb-4"></i>
+                <p class="text-slate-500 mt-4 text-center">กำลังเชื่อมต่อฐานข้อมูล... (โหลดเฉพาะครั้งแรก)</p>
+            </div>
+
+            <!-- Initial State (ยังไม่ค้นหา) -->
+            <div id="initialState" class="flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-4 shadow-sm border border-blue-100">
+                    <i data-lucide="search" class="w-10 h-10 text-carrier-lightblue"></i>
+                </div>
+                <h3 class="text-lg font-medium text-slate-800 mb-2">พร้อมสำหรับการค้นหา</h3>
+                <p class="text-slate-500">พิมพ์ รหัสอะไหล่, ซีรีส์ หรือ รุ่นแอร์ แล้วกด <b>ค้นหา</b><br>ระบบจะดึงข้อมูลมาแสดงทันที</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center">
+                <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="package-search" class="w-10 h-10 text-slate-400"></i>
+                </div>
+                <h3 class="text-lg font-medium text-slate-800 mb-2">ไม่พบรายการอะไหล่</h3>
+                <p class="text-slate-500">ลองตรวจสอบการสะกดคำ หรือเปลี่ยนคำค้นหาใหม่</p>
+            </div>
+
+            <!-- Table Wrapper (Responsive) -->
+            <div id="resultsTableWrapper" class="overflow-x-auto border border-slate-200 rounded-xl hidden">
+                <table class="w-full text-left border-collapse min-w-[1000px]">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 text-sm border-b border-slate-200">
+                            <th class="p-4 font-medium w-20 text-center">BOM</th>
+                            <th class="p-4 font-medium w-20 text-center">E-PART</th>
+                            <th class="p-4 font-medium w-16 text-center">No.</th>
+                            <th class="p-4 font-medium">Part No.</th>
+                            <th class="p-4 font-medium min-w-[200px]">Description</th>
+                            <th class="p-4 font-medium">Series Name</th>
+                            <th class="p-4 font-medium">Model</th>
+                            <th class="p-4 font-medium text-center">Type</th>
+                            <th class="p-4 font-medium text-right">ราคาแนะนำ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody" class="divide-y divide-slate-100">
+                        <!-- Rows will be injected here by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- เพิ่มกล่อง Image Modal สำหรับซูมรูปภาพ -->
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <button id="closeModalBtn" class="absolute top-6 right-6 text-white hover:text-gray-300 bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <div class="max-w-4xl max-h-[90vh] w-full flex flex-col items-center">
+            <img id="modalImage" src="" alt="Zoomed Image" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl bg-white/10 p-2">
+            <p id="modalCaption" class="text-white mt-4 text-xl font-medium text-center"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-carrier-dark text-slate-300 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="text-2xl font-bold text-white tracking-tighter uppercase mb-4">Carrier</div>
+                    <p class="text-sm text-slate-400 mb-4">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด<br>
+                    ผู้นำด้านนวัตกรรมความเย็น เพื่อชีวิตที่ดียิ่งขึ้น</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4">ติดต่อสอบถามอะไหล่</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> Call Center: 1454</li>
+                        <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> Line: @CarrierCare</li>
+                        <li class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i> จันทร์ - เสาร์ (8:30 - 17:30 น.)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4">ลิงก์ที่เกี่ยวข้อง</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">ลงทะเบียนรับประกันสินค้า</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">ค้นหาศูนย์บริการใกล้บ้าน</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">แจ้งซ่อมออนไลน์</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-sm text-center text-slate-500">
+                &copy; 2024 B.Grimm Carrier (Thailand) Limited. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Data Fetching and Logic -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // ---------------------------------------------------------
+        // GOOGLE SHEETS API CONFIGURATION
+        // ---------------------------------------------------------
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqQQ95qMr_dQFbuwzlHBqkbg5QvTPWDnhzB3oBUVTyopam3TB8zjyyQPtl5PnZmNON/exec'; 
+        
+        let allData = []; // เก็บข้อมูลทั้งหมด
+
+        // ---------------------------------------------------------
+        // DOM Elements
+        // ---------------------------------------------------------
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const resultsTableWrapper = document.getElementById('resultsTableWrapper');
+        const resultsTableBody = document.getElementById('resultsTableBody');
+        const resultCount = document.getElementById('resultCount');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const initialState = document.getElementById('initialState');
+        const typeFilter = document.getElementById('typeFilter');
+        const refreshBtn = document.getElementById('refreshBtn'); // เพิ่มตัวแปรปุ่มรีเฟรช
+
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // ---------------------------------------------------------
+        // Functions
+        // ---------------------------------------------------------
+        
+        window.openImageModal = (url, caption) => {
+            modalImage.src = url;
+            modalCaption.textContent = caption;
+            imageModal.classList.remove('hidden');
+            setTimeout(() => { imageModal.classList.remove('opacity-0'); }, 10);
+        };
+
+        const closeImageModal = () => {
+            imageModal.classList.add('opacity-0');
+            setTimeout(() => {
+                imageModal.classList.add('hidden');
+                modalImage.src = '';
+            }, 300);
+        };
+
+        const formatPrice = (price) => {
+            return new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(price);
+        };
+
+        // Render Table Row HTML
+        const createTableRow = (item) => {
+            // สร้างรูปจำลองแยกกันชัดเจน ว่าช่องไหนหา BOM ไม่เจอ ช่องไหนหา E-PART ไม่เจอ
+            const fallbackBOM = 'https://placehold.co/100x100/f8fafc/94a3b8?text=No+BOM';
+            const fallbackEPRAT = 'https://placehold.co/100x100/f8fafc/94a3b8?text=No+E-PART';
+            
+            const imgBOM = item.imageUrlBOM ? item.imageUrlBOM : fallbackBOM;
+            const imgEPRAT = item.imageUrlEPRAT ? item.imageUrlEPRAT : fallbackEPRAT;
+
+            const typeBadgeColor = item.fcu_cdu === 'FCU' 
+                ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                : 'bg-orange-50 text-orange-700 border-orange-200';
+
+            return `
+                <tr class="hover:bg-blue-50/40 transition-colors group bg-white">
+                    <td class="p-3 align-middle">
+                        <div class="w-16 h-16 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-1 shadow-sm ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''} transition-colors" 
+                             ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'BOM: ${item.description}')" title="คลิกเพื่อขยายรูป BOM"` : 'title="ไม่มีรูปภาพ BOM"'}>
+                            <img src="${imgBOM}" 
+                                 alt="BOM ${item.description}" 
+                                 onerror="this.onerror=null; this.src='${fallbackBOM}';" 
+                                 class="w-full h-full object-contain ${item.imageUrlBOM ? 'group-hover:scale-110 transition-transform duration-300' : 'opacity-70'}">
+                        </div>
+                    </td>
+                    <td class="p-3 align-middle">
+                        <div class="w-16 h-16 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-1 shadow-sm ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''} transition-colors" 
+                             ${item.imageUrlEPRAT ? `onclick="openImageModal('${imgEPRAT}', 'E-PART: ${item.description}')" title="คลิกเพื่อขยายรูป E-PART"` : 'title="ไม่มีรูปภาพ E-PART"'}>
+                            <img src="${imgEPRAT}" 
+                                 alt="E-PART ${item.description}" 
+                                 onerror="this.onerror=null; this.src='${fallbackEPRAT}';" 
+                                 class="w-full h-full object-contain ${item.imageUrlEPRAT ? 'group-hover:scale-110 transition-transform duration-300' : 'opacity-70'}">
+                        </div>
+                    </td>
+                    <td class="p-3 align-middle text-center">
+                        <span class="inline-flex items-center justify-center min-w-[28px] h-7 rounded-md bg-slate-100 text-slate-600 font-medium text-sm">
+                            ${item.no || '-'}
+                        </span>
+                    </td>
+                    <td class="p-3 align-middle font-semibold text-carrier-lightblue whitespace-nowrap">
+                        ${item.partNo || '-'}
+                    </td>
+                    <td class="p-3 align-middle text-slate-800 font-medium">
+                        ${item.description || '-'}
+                    </td>
+                    <td class="p-3 align-middle text-slate-600 whitespace-nowrap text-sm">
+                        ${item.seriesName || '-'}
+                    </td>
+                    <td class="p-3 align-middle text-slate-600 whitespace-nowrap text-sm">
+                        ${item.model || '-'}
+                    </td>
+                    <td class="p-3 align-middle text-center">
+                        <span class="px-2.5 py-1 ${typeBadgeColor} text-xs rounded-md border font-medium">
+                            ${item.fcu_cdu || '-'}
+                        </span>
+                    </td>
+                    <td class="p-3 align-middle font-bold text-carrier-blue text-right whitespace-nowrap text-lg">
+                        ${item.price ? formatPrice(item.price) : 'N/A'}
+                    </td>
+                </tr>
+            `;
+        };
+
+        // ฟังก์ชันหลักสำหรับการค้นหาข้อมูล (อัปเดตใหม่ ให้โหลดตอนกดค้นหาเท่านั้น)
+        const handleSearch = async () => {
+            const query = searchInput.value.toLowerCase().trim();
+            const filterType = typeFilter.value;
+
+            // ถ้าไม่ได้พิมพ์ค้นหา ให้ซ่อนตารางแล้วโชว์หน้าเริ่มต้น
+            if (query === '' && filterType === 'ALL') {
+                resultsTableWrapper.classList.add('hidden');
+                emptyState.classList.add('hidden');
+                initialState.classList.remove('hidden');
+                initialState.classList.add('flex');
+                resultCount.textContent = '0';
+                return;
+            }
+
+            // ซ่อนหน้าพร้อมสำหรับการค้นหา
+            initialState.classList.add('hidden');
+            initialState.classList.remove('flex');
+            emptyState.classList.add('hidden');
+
+            // 🌟 เช็คว่าถ้ายังไม่เคยดึงข้อมูลเลย ให้ดึงข้อมูลมาเก็บไว้ก่อน 🌟
+            if (allData.length === 0) {
+                resultsTableWrapper.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+                loadingState.classList.add('flex');
+
+                try {
+                    const response = await fetch(SCRIPT_URL);
+                    const responseData = await response.json();
+                    
+                    allData = Array.isArray(responseData) ? responseData : responseData.data;
+                    
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    loadingState.querySelector('i').setAttribute('data-lucide', 'x-circle');
+                    loadingState.querySelector('i').classList.remove('animate-spin', 'text-carrier-lightblue');
+                    loadingState.querySelector('i').classList.add('text-red-500');
+                    loadingState.querySelector('p').innerHTML = 'เกิดข้อผิดพลาดในการดึงข้อมูลจากชีท<br><span class="text-xs text-slate-400">โปรดตรวจสอบ URL หรืออินเทอร์เน็ต</span>';
+                    lucide.createIcons();
+                    return; // ยกเลิกการค้นหาหากโหลดพลาด
+                }
+            }
+
+            // 🌟 นำข้อมูลที่มีอยู่มากรองแสดงผล (ทำงานเร็วมาก) 🌟
+            const filteredData = allData.filter(item => {
+                const matchText = (item.description && item.description.toLowerCase().includes(query)) || 
+                                  (item.partNo && item.partNo.toLowerCase().includes(query)) || 
+                                  (item.model && item.model.toLowerCase().includes(query)) ||
+                                  (item.seriesName && item.seriesName.toLowerCase().includes(query));
+                
+                const matchType = filterType === 'ALL' || item.fcu_cdu === filterType;
+
+                return matchText && matchType;
+            });
+
+            resultCount.textContent = filteredData.length;
+
+            if (filteredData.length > 0) {
+                resultsTableWrapper.classList.remove('hidden');
+                resultsTableBody.innerHTML = filteredData.map(item => createTableRow(item)).join('');
+                lucide.createIcons();
+            } else {
+                resultsTableWrapper.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            }
+        };
+
+        // ---------------------------------------------------------
+        // Event Listeners
+        // ---------------------------------------------------------
+
+        // ควบคุมปุ่มกากบาท ลบคำค้นหา
+        searchInput.addEventListener('input', (e) => {
+            if(e.target.value.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        });
+
+        // เมื่อกดปุ่ม "ค้นหา" ค่อยทำงาน
+        searchBtn.addEventListener('click', handleSearch);
+
+        // เมื่อกดปุ่ม Enter ค่อยทำงาน
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+        // ฟังก์ชันสำหรับรีเฟรชดึงข้อมูลใหม่
+        const handleRefresh = async () => {
+            // รีเซ็ตค่าการค้นหา
+            searchInput.value = '';
+            clearBtn.classList.add('hidden');
+            typeFilter.value = 'ALL';
+            allData = []; // ล้างข้อมูลเดิมทิ้งเพื่อบังคับให้โหลดใหม่
+
+            // ตั้งค่า UI ระหว่างโหลด
+            resultsTableWrapper.classList.add('hidden');
+            emptyState.classList.add('hidden');
+            initialState.classList.add('hidden');
+            initialState.classList.remove('flex');
+            
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
+            loadingState.querySelector('p').innerHTML = 'กำลังอัปเดตข้อมูลล่าสุดจากฐานข้อมูล...';
+
+            // เริ่มดึงข้อมูลใหม่
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const responseData = await response.json();
+                allData = Array.isArray(responseData) ? responseData : responseData.data;
+                
+                loadingState.classList.add('hidden');
+                loadingState.classList.remove('flex');
+                
+                // กลับไปหน้า "พร้อมสำหรับการค้นหา"
+                initialState.classList.remove('hidden');
+                initialState.classList.add('flex');
+                resultCount.textContent = '0';
+                
+                // คืนค่าข้อความโหลดปกติ
+                loadingState.querySelector('p').innerHTML = 'กำลังเชื่อมต่อฐานข้อมูล... (โหลดเฉพาะครั้งแรก)';
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                loadingState.querySelector('i').setAttribute('data-lucide', 'x-circle');
+                loadingState.querySelector('i').classList.remove('animate-spin', 'text-carrier-lightblue');
+                loadingState.querySelector('i').classList.add('text-red-500');
+                loadingState.querySelector('p').innerHTML = 'เกิดข้อผิดพลาดในการดึงข้อมูลจากชีท<br><span class="text-xs text-slate-400">โปรดตรวจสอบ URL หรืออินเทอร์เน็ต</span>';
+                lucide.createIcons();
+            }
+        };
+
+        // เมื่อกดปุ่มรีเฟรช
+        refreshBtn.addEventListener('click', handleRefresh);
+
+        // หากมีการลบคำค้นหา ให้รีเซ็ตกลับไปหน้าแรก
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearBtn.classList.add('hidden');
+            handleSearch(); // จะเข้าเงื่อนไขเคลียร์กลับไปหน้าเริ่มต้น
+            searchInput.focus();
+        });
+
+        // Event Listeners สำหรับปิด Image Modal
+        closeModalBtn.addEventListener('click', closeImageModal);
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) closeImageModal(); 
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !imageModal.classList.contains('hidden')) {
+                closeImageModal(); 
+            }
+        });
+
+    </script>
+</body>
+</html>
