@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons (Updated CDN for better stability) -->
+    <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     
     <script>
@@ -96,19 +96,29 @@
                 <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,100 100,0 V100 H0 Z" fill="white"></path></svg>
             </div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 relative z-10">
-                <div class="text-center max-w-4xl mx-auto">
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">ค้นหาราคาอะไหล่แท้</h1>
+                <div class="text-center max-w-5xl mx-auto">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-6">ค้นหาราคาอะไหล่แท้</h1>
                     
-                    <!-- Search Box -->
+                    <!-- Search Box Area -->
                     <div class="glass-panel p-2 md:p-3 rounded-2xl shadow-xl flex flex-col md:flex-row gap-2 md:gap-0 relative z-20 transition-all duration-300">
-                        <div class="flex-1 flex items-center px-4 bg-white rounded-xl md:rounded-r-none md:rounded-l-xl">
-                            <i data-lucide="search" class="text-slate-400 w-5 h-5"></i>
-                            <input type="text" id="searchInput" placeholder="รหัสอะไหล่, รุ่น หรือ ซีรีส์..." class="w-full py-3 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400" autocomplete="off">
-                            <button id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        
+                        <!-- ช่องค้นหาหลัก (รุ่น / ซีรีส์ / Part No) -->
+                        <div class="flex-1 flex items-center px-3 bg-white rounded-xl md:rounded-r-none md:rounded-l-xl md:border-r border-slate-200">
+                            <i data-lucide="search" class="text-slate-400 w-5 h-5 shrink-0"></i>
+                            <input type="text" id="searchInput" placeholder="รุ่น, ซีรีส์ หรือ รหัสอะไหล่..." class="w-full py-3 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm md:text-base" autocomplete="off">
+                            <button id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
                         </div>
 
-                        <div class="w-full md:w-40 bg-white md:border-l border-slate-200 px-2 flex items-center md:rounded-none rounded-xl">
-                            <select id="typeFilter" class="w-full py-3 px-2 outline-none text-slate-600 bg-transparent cursor-pointer font-medium text-sm">
+                        <!-- ช่องค้นหา Description (ชื่ออะไหล่ / Parts Catalog) -->
+                        <div class="flex-[1.2] flex items-center px-3 bg-white rounded-xl md:rounded-none md:border-r border-slate-200">
+                            <i data-lucide="file-text" class="text-slate-400 w-5 h-5 shrink-0"></i>
+                            <input type="text" id="descSearchInput" placeholder="ค้นหาจากชื่อ หรือ Parts Catalog..." class="w-full py-3 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm md:text-base" autocomplete="off" title="หากไม่พบข้อมูล ระบบจะดึงจากรุ่นปกติให้โดยอัตโนมัติ">
+                            <button id="clearDescBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+
+                        <!-- Type Filter -->
+                        <div class="w-full md:w-32 bg-white px-2 flex items-center md:rounded-none rounded-xl">
+                            <select id="typeFilter" class="w-full py-3 px-1 outline-none text-slate-600 bg-transparent cursor-pointer font-medium text-sm">
                                 <option value="ALL">ทุกประเภท</option>
                                 <option value="FCU">FCU (คอยล์เย็น)</option>
                                 <option value="CDU">CDU (คอยล์ร้อน)</option>
@@ -116,15 +126,16 @@
                         </div>
                         
                         <!-- ช่องคำนวณส่วนลด (เฉพาะแอดมิน) -->
-                        <div class="admin-only w-full md:w-36 bg-orange-50 md:border-l border-slate-200 px-3 flex items-center md:rounded-none rounded-xl">
-                            <i data-lucide="percent" class="text-orange-500 w-4 h-4 mr-1"></i>
+                        <div class="admin-only w-full md:w-32 bg-orange-50 md:border-l border-slate-200 px-3 flex items-center md:rounded-none rounded-xl">
+                            <i data-lucide="percent" class="text-orange-500 w-4 h-4 mr-1 shrink-0"></i>
                             <input type="number" id="discountInput" placeholder="ส่วนลด %" min="0" max="100" value="0" class="w-full py-3 bg-transparent outline-none text-orange-700 font-bold text-center placeholder-orange-300" title="กรอกเปอร์เซ็นต์ส่วนลด">
                         </div>
 
-                        <button id="searchBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-xl md:rounded-none md:border-l border-blue-400 transition-colors flex items-center justify-center gap-2">
+                        <!-- Buttons -->
+                        <button id="searchBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-xl md:rounded-none md:border-l border-blue-400 transition-colors flex items-center justify-center gap-2 shrink-0">
                             <span>ค้นหา</span>
                         </button>
-                        <button id="refreshBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-xl md:rounded-l-none md:rounded-r-xl transition-colors flex items-center justify-center group" title="โหลดข้อมูลล่าสุด">
+                        <button id="refreshBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-xl md:rounded-l-none md:rounded-r-xl transition-colors flex items-center justify-center group shrink-0" title="โหลดข้อมูลล่าสุด">
                             <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500"></i>
                         </button>
                     </div>
@@ -147,7 +158,7 @@
                 <div id="initialState" class="flex flex-col items-center justify-center py-20 text-center">
                     <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-4 shadow-sm border border-blue-100"><i data-lucide="search" class="w-10 h-10 text-carrier-lightblue"></i></div>
                     <h3 class="text-lg font-medium text-slate-800 mb-2">พร้อมสำหรับการค้นหา</h3>
-                    <p class="text-slate-500">พิมพ์ รหัสอะไหล่, ซีรีส์ หรือ รุ่นแอร์ แล้วกด <b>ค้นหา</b></p>
+                    <p class="text-slate-500">พิมพ์ รุ่น, ชื่ออะไหล่ หรือ ซีรีส์ แล้วกด <b>ค้นหา</b></p>
                 </div>
                 <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center">
                     <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4"><i data-lucide="package-search" class="w-10 h-10 text-slate-400"></i></div>
@@ -160,7 +171,7 @@
                     <table class="w-full text-left border-collapse min-w-[1100px]">
                         <thead>
                             <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
-                                <th class="p-3 font-semibold text-center w-16">BOM</th>
+                                <th class="p-3 font-semibold text-center w-24 leading-tight">Exploded View<br>Drawing</th>
                                 <th class="p-3 font-semibold text-center w-16">E-PART</th>
                                 <th class="p-3 font-semibold text-center w-12">No.</th>
                                 <th class="p-3 font-semibold">Part No.</th>
@@ -168,9 +179,10 @@
                                 <th class="p-3 font-semibold">Series Name</th>
                                 <th class="p-3 font-semibold">Model</th>
                                 <th class="p-3 font-semibold text-center">Type</th>
-                                <th class="p-3 font-semibold text-right">Price_2026</th>
-                                <!-- Admin Columns -->
+                                <!-- Admin Column 1 -->
                                 <th class="admin-only p-3 font-semibold text-right bg-orange-50/50 text-orange-800 border-l border-orange-100">ราคาทุน /69</th>
+                                <th class="p-3 font-semibold text-right">Price_2026</th>
+                                <!-- Admin Column 2 -->
                                 <th class="admin-only p-3 font-semibold text-right bg-orange-50 text-orange-800">ราคาหลังหักส่วนลด</th>
                             </tr>
                         </thead>
@@ -264,7 +276,7 @@
     </div>
 
     <script>
-        // ฟังก์ชันช่วยเพื่อตรวจสอบว่าไลบรารีโหลดเสร็จหรือยัง ป้องกัน Error: lucide is not defined
+        // ฟังก์ชันช่วยเพื่อตรวจสอบว่าไลบรารีโหลดเสร็จหรือยัง
         const initIcons = () => {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
@@ -282,7 +294,7 @@
         let currentFilteredData = [];
         
         // สถานะผู้ใช้งาน
-        let currentUserRole = null; // 'admin' หรือ 'dealer'
+        let currentUserRole = null; 
 
         // ตั้งค่า Pagination
         let currentPage = 1;
@@ -297,9 +309,13 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const discountInput = document.getElementById('discountInput');
 
+        // Search Elements
         const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
         const clearBtn = document.getElementById('clearBtn');
+        const descSearchInput = document.getElementById('descSearchInput'); // ช่องค้นหา Description ใหม่
+        const clearDescBtn = document.getElementById('clearDescBtn'); // ปุ่มลบช่อง Description
+
+        const searchBtn = document.getElementById('searchBtn');
         const refreshBtn = document.getElementById('refreshBtn');
         const typeFilter = document.getElementById('typeFilter');
         
@@ -334,7 +350,7 @@
 
             if (user === 'admin' && pass === 'Bgrimmcarrier') {
                 loginSuccess('admin', 'Administrator');
-            } else if (user === 'dealercarrier' && pass === 'Bgrimmdealer') {
+            } else if (user === 'dealercarrier' && pass === 'dealercarrier2026') {
                 loginSuccess('dealer', 'Dealer');
             } else {
                 loginError.classList.remove('hidden');
@@ -357,7 +373,6 @@
             mainApp.classList.remove('hidden');
             mainApp.classList.add('flex');
             
-            // ล้างหน้าจอเริ่มต้น
             handleRefresh();
         }
 
@@ -386,26 +401,18 @@
         // --- เช็ค Part No ข้ามรุ่น ---
         window.showModelsForPart = (partNo) => {
             if(!partNo || partNo === '-') return;
-            
             partModalTitle.textContent = `รุ่นที่ใช้อะไหล่: ${partNo}`;
-            
             const matchingItems = allData.filter(item => item.partNo === partNo);
-            
             if(matchingItems.length === 0) {
                  partModalContent.innerHTML = `<p class="text-slate-500 text-center py-8">ไม่พบข้อมูลรุ่นอื่นที่ใช้อะไหล่นี้</p>`;
             } else {
-                 let html = `<p class="text-sm text-slate-500 mb-4">พบทั้งหมด <span class="font-bold text-carrier-blue">${matchingItems.length}</span> รายการที่ใช้ Part No. นี้</p>`;
-                 html += `<ul class="space-y-3">`;
-                 
-                 // ใช้ Set กรองรุ่นซ้ำ
+                 let html = `<p class="text-sm text-slate-500 mb-4">พบทั้งหมด <span class="font-bold text-carrier-blue">${matchingItems.length}</span> รายการที่ใช้ Part No. นี้</p><ul class="space-y-3">`;
                  const uniqueModels = new Set();
                  matchingItems.forEach(item => {
                      const modelCode = item.model || 'ไม่มีชื่อรุ่น';
                      const seriesInfo = item.seriesName ? `<span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full border border-blue-100 ml-2">${item.seriesName}</span>` : '';
                      const descInfo = item.description ? `<div class="text-sm text-slate-500 mt-1">${item.description}</div>` : '';
-                     
                      const uniqueKey = `${modelCode}-${item.description}`;
-                     
                      if(!uniqueModels.has(uniqueKey)) {
                          uniqueModels.add(uniqueKey);
                          html += `
@@ -418,11 +425,9 @@
                             </li>`;
                      }
                  });
-                 
                  html += `</ul>`;
                  partModalContent.innerHTML = html;
             }
-            
             partModal.classList.remove('hidden');
             setTimeout(() => partModal.classList.remove('opacity-0'), 10);
             initIcons();
@@ -437,13 +442,12 @@
 
         // --- Render Table Row ---
         const createTableRow = (item) => {
-            const fallbackBOM = 'https://placehold.co/80x80/f8fafc/94a3b8?text=No+BOM';
+            const fallbackBOM = 'https://placehold.co/80x80/f8fafc/94a3b8?text=No+Drawing';
             const fallbackEPRAT = 'https://placehold.co/80x80/f8fafc/94a3b8?text=No+E-PART';
             const imgBOM = item.imageUrlBOM ? item.imageUrlBOM : fallbackBOM;
             const imgEPRAT = item.imageUrlEPRAT ? item.imageUrlEPRAT : fallbackEPRAT;
             const typeBadgeColor = item.fcu_cdu === 'FCU' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-orange-50 text-orange-700 border-orange-200';
 
-            // คำนวณส่วนลด (เฉพาะแอดมิน)
             const discountPercent = parseFloat(discountInput.value) || 0;
             const discountedPrice = item.price * (1 - (discountPercent / 100));
 
@@ -451,14 +455,14 @@
                 <tr class="hover:bg-blue-50/40 transition-colors group bg-white">
                     <td class="p-2 align-middle">
                         <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
-                             ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'BOM (No. ${item.no || '-'}): ${item.description}')"` : ''}>
-                            <img src="${imgBOM}" onerror="this.onerror=null; this.src='${fallbackBOM}';" class="w-full h-full object-contain ${!item.imageUrlBOM ? 'opacity-70' : ''}">
+                             ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'Exploded View Drawing (No. ${item.no || '-'}): ${item.description}')"` : ''}>
+                            <img src="${imgBOM}" alt="Exploded View Drawing" onerror="this.onerror=null; this.src='${fallbackBOM}';" class="w-full h-full object-contain ${!item.imageUrlBOM ? 'opacity-70' : ''}">
                         </div>
                     </td>
                     <td class="p-2 align-middle">
                         <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
                              ${item.imageUrlEPRAT ? `onclick="openImageModal('${imgEPRAT}', 'E-PART (No. ${item.no || '-'}): ${item.description}')"` : ''}>
-                            <img src="${imgEPRAT}" onerror="this.onerror=null; this.src='${fallbackEPRAT}';" class="w-full h-full object-contain ${!item.imageUrlEPRAT ? 'opacity-70' : ''}">
+                            <img src="${imgEPRAT}" alt="E-PART" onerror="this.onerror=null; this.src='${fallbackEPRAT}';" class="w-full h-full object-contain ${!item.imageUrlEPRAT ? 'opacity-70' : ''}">
                         </div>
                     </td>
                     <td class="p-2 align-middle text-center"><span class="text-slate-500 font-medium">${item.no || '-'}</span></td>
@@ -469,10 +473,9 @@
                     <td class="p-2 align-middle text-slate-600">${item.seriesName || '-'}</td>
                     <td class="p-2 align-middle text-slate-600">${item.model || '-'}</td>
                     <td class="p-2 align-middle text-center"><span class="px-2 py-1 ${typeBadgeColor} text-xs rounded border font-medium">${item.fcu_cdu || '-'}</span></td>
-                    <td class="p-3 align-middle font-bold text-carrier-blue text-right text-base">${item.price ? formatPrice(item.price) : '-'}</td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin -->
                     <td class="admin-only p-3 align-middle font-medium text-orange-700 text-right bg-orange-50/30 border-l border-orange-100">${item.costPrice > 0 ? formatPrice(item.costPrice) : '-'}</td>
+                    <td class="p-3 align-middle font-bold text-carrier-blue text-right text-base">${item.price ? formatPrice(item.price) : '-'}</td>
                     <td class="admin-only p-3 align-middle font-bold text-red-600 text-right bg-orange-50/60">${item.price > 0 ? formatPrice(discountedPrice) : '-'}</td>
                 </tr>
             `;
@@ -503,26 +506,21 @@
 
             resultsTableBody.innerHTML = pageData.map(createTableRow).join('');
             
-            // Update Info text
             pageStartItem.textContent = startIndex + 1;
             pageEndItem.textContent = Math.min(endIndex, currentFilteredData.length);
             
             renderPaginationButtons(totalPages);
-            initIcons(); // โหลดไอคอนซ้ำในกรณีที่มีการสร้าง DOM ใหม่
+            initIcons();
         };
 
         const renderPaginationButtons = (totalPages) => {
             let html = '';
-            
-            // ปุ่ม Prev
             html += `<button onclick="changePage(${currentPage - 1})" class="px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50" ${currentPage === 1 ? 'disabled' : ''}><i data-lucide="chevron-left" class="w-4 h-4"></i></button>`;
             
-            // ปุ่มเลขหน้า (แสดงแบบย่อเพื่อไม่ให้ยาวเกินไป)
             let startP = Math.max(1, currentPage - 2);
             let endP = Math.min(totalPages, currentPage + 2);
             
             if(startP > 1) html += `<span class="px-2 text-slate-400">...</span>`;
-            
             for(let i = startP; i <= endP; i++) {
                 if(i === currentPage) {
                     html += `<button class="px-3 py-1 rounded bg-carrier-lightblue text-white font-medium shadow-sm">${i}</button>`;
@@ -530,10 +528,8 @@
                     html += `<button onclick="changePage(${i})" class="px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50">${i}</button>`;
                 }
             }
-
             if(endP < totalPages) html += `<span class="px-2 text-slate-400">...</span>`;
 
-            // ปุ่ม Next
             html += `<button onclick="changePage(${currentPage + 1})" class="px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50" ${currentPage === totalPages ? 'disabled' : ''}><i data-lucide="chevron-right" class="w-4 h-4"></i></button>`;
 
             paginationButtons.innerHTML = html;
@@ -543,16 +539,16 @@
         window.changePage = (page) => {
             currentPage = page;
             renderTablePage();
-            // เลื่อนจอขึ้นไปบนตาราง
             document.getElementById('resultsTableWrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
 
         // --- Search & Data Fetching ---
         const handleSearch = async () => {
             const query = searchInput.value.toLowerCase().trim();
+            const descQuery = descSearchInput.value.toLowerCase().trim();
             const filterType = typeFilter.value;
 
-            if (query === '' && filterType === 'ALL') {
+            if (query === '' && descQuery === '' && filterType === 'ALL') {
                 resultsTableWrapper.classList.add('hidden');
                 paginationWrapper.classList.add('hidden');
                 emptyState.classList.add('hidden');
@@ -575,11 +571,6 @@
                 try {
                     const response = await fetch(SCRIPT_URL);
                     const responseData = await response.json();
-                    
-                    if(responseData.debug_cost_col !== undefined) {
-                        console.log("Found Cost Column at index:", responseData.debug_cost_col);
-                    }
-
                     allData = Array.isArray(responseData) ? responseData : responseData.data;
                     loadingState.classList.add('hidden');
                     loadingState.classList.remove('flex');
@@ -593,25 +584,90 @@
                 }
             }
 
-            // กรองข้อมูล
-            currentFilteredData = allData.filter(item => {
-                const matchText = (item.description && item.description.toLowerCase().includes(query)) || 
-                                  (item.partNo && item.partNo.toLowerCase().includes(query)) || 
-                                  (item.model && item.model.toLowerCase().includes(query)) ||
-                                  (item.seriesName && item.seriesName.toLowerCase().includes(query));
+            // 1. กรองเบื้องต้น (Primary Search: รุ่น, รหัส, ซีรีส์ และ ประเภท)
+            let baseFilteredData = allData.filter(item => {
+                let matchText = true;
+                if(query !== '') {
+                    matchText = (item.model && item.model.toLowerCase().includes(query)) || 
+                                (item.partNo && item.partNo.toLowerCase().includes(query)) || 
+                                (item.seriesName && item.seriesName.toLowerCase().includes(query));
+                }
                 const matchType = filterType === 'ALL' || item.fcu_cdu === filterType;
                 return matchText && matchType;
             });
 
+            // 2. กรองด้วยชื่อ Description 
+            let finalFilteredData = baseFilteredData;
+            
+            if (descQuery !== '') {
+                const descFilteredData = baseFilteredData.filter(item => {
+                    return (item.description && item.description.toLowerCase().includes(descQuery)) ||
+                           (item.partNo && item.partNo.toLowerCase().includes(descQuery)); // เผื่อพิมพ์รหัส Catalog ในช่องนี้
+                });
+
+                // 3. ระบบ Fallback: ถ้าระบุชื่อแล้ว "ไม่พบ" ข้อมูลเลย ให้ละทิ้งการค้นหาชื่อและดึงข้อมูลจากการค้นหาปกติมาให้ทั้งหมด
+                if (descFilteredData.length > 0) {
+                    finalFilteredData = descFilteredData;
+                } else {
+                    finalFilteredData = baseFilteredData; 
+                    // สามารถใส่ alert หรือแจ้งเตือนเล็กๆ ได้ตรงนี้หากต้องการ
+                }
+            }
+
+            currentFilteredData = finalFilteredData;
+
+            // จัดเรียงข้อมูล (Smart Sorting)
+            const sortQuery = query !== '' ? query : descQuery; 
+            if (sortQuery !== '') {
+                currentFilteredData.sort((a, b) => {
+                    const getScore = (item) => {
+                        const model = (item.model || '').toLowerCase();
+                        const partNo = (item.partNo || '').toLowerCase();
+                        const desc = (item.description || '').toLowerCase();
+                        
+                        // 1. ตรงกันเป๊ะ (Exact Match)
+                        if (model === sortQuery || partNo === sortQuery || desc === sortQuery) return 1;
+                        
+                        // 2. ขึ้นต้นด้วยคำค้นหา (Starts With)
+                        const modelStartsWith = model.startsWith(sortQuery);
+                        const partNoStartsWith = partNo.startsWith(sortQuery);
+                        const descStartsWith = desc.startsWith(sortQuery);
+                        
+                        if (modelStartsWith || partNoStartsWith || descStartsWith) {
+                            const len1 = modelStartsWith ? model.length : 999;
+                            const len2 = partNoStartsWith ? partNo.length : 999;
+                            const len3 = descStartsWith ? desc.length : 999;
+                            const minLen = Math.min(len1, len2, len3);
+                            return 2 + (minLen * 0.001); 
+                        }
+                        
+                        // 3. มีคำค้นหาอยู่ตรงกลาง (Contains)
+                        if (model.includes(sortQuery) || partNo.includes(sortQuery) || desc.includes(sortQuery)) return 3;
+                        
+                        return 4;
+                    };
+
+                    const scoreA = getScore(a);
+                    const scoreB = getScore(b);
+
+                    if (scoreA !== scoreB) {
+                        return scoreA - scoreB;
+                    }
+                    return (a.model || '').localeCompare(b.model || '');
+                });
+            }
+
             resultCount.textContent = currentFilteredData.length;
-            currentPage = 1; // รีเซ็ตกลับไปหน้า 1 เสมอเมื่อค้นหาใหม่
+            currentPage = 1; 
             renderTablePage();
             initIcons();
         };
 
         const handleRefresh = async () => {
             searchInput.value = '';
+            descSearchInput.value = '';
             clearBtn.classList.add('hidden');
+            clearDescBtn.classList.add('hidden');
             typeFilter.value = 'ALL';
             discountInput.value = '0';
             allData = []; 
@@ -648,12 +704,9 @@
         };
 
         // --- Event Listeners ---
+        // ช่องค้นหาหลัก
         searchInput.addEventListener('input', (e) => { e.target.value.length > 0 ? clearBtn.classList.remove('hidden') : clearBtn.classList.add('hidden'); });
-        searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
-        typeFilter.addEventListener('change', handleSearch);
-        refreshBtn.addEventListener('click', handleRefresh);
-        
         clearBtn.addEventListener('click', () => {
             searchInput.value = '';
             clearBtn.classList.add('hidden');
@@ -661,7 +714,21 @@
             searchInput.focus();
         });
 
-        // เมื่อแอดมินเปลี่ยน % ส่วนลด ให้คำนวณราคาในตารางใหม่ทันที (ไม่ต้องดึงข้อมูลใหม่)
+        // ช่องค้นหา Description (ใหม่)
+        descSearchInput.addEventListener('input', (e) => { e.target.value.length > 0 ? clearDescBtn.classList.remove('hidden') : clearDescBtn.classList.add('hidden'); });
+        descSearchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
+        clearDescBtn.addEventListener('click', () => {
+            descSearchInput.value = '';
+            clearDescBtn.classList.add('hidden');
+            handleSearch(); 
+            descSearchInput.focus();
+        });
+
+        searchBtn.addEventListener('click', handleSearch);
+        typeFilter.addEventListener('change', handleSearch);
+        refreshBtn.addEventListener('click', handleRefresh);
+
+        // เมื่อแอดมินเปลี่ยน % ส่วนลด ให้คำนวณราคาในตารางใหม่ทันที
         discountInput.addEventListener('input', () => {
             if (currentFilteredData.length > 0) renderTablePage();
         });
