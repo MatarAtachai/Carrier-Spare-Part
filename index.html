@@ -17,7 +17,7 @@
                 extend: {
                     fontFamily: { sans: ['Prompt', 'sans-serif'], },
                     colors: {
-                        carrier: { blue: '#0033a0', lightblue: '#005eb8', dark: '#0f172a', gray: '#f8fafc' }
+                        carrier: { blue: '#0033a0', lightblue: '#005eb8', dark: '#0a1121', gray: '#f8fafc' }
                     }
                 }
             }
@@ -193,10 +193,47 @@
             </div>
         </main>
 
-        <footer class="bg-carrier-dark text-slate-300 py-8 mt-auto">
-            <div class="max-w-7xl mx-auto px-4 text-center text-sm">
-                <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-8 w-auto object-contain mx-auto mb-4 filter brightness-0 invert opacity-70">
-                &copy; 2024 B.Grimm Carrier (Thailand) Limited. All rights reserved.
+        <!-- ==================== PREMIUM FOOTER ==================== -->
+        <footer class="bg-carrier-dark text-slate-300 pt-12 pb-8 mt-auto font-light text-sm border-t-[6px] border-carrier-lightblue">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                    <!-- 1. ที่อยู่บริษัท -->
+                    <div>
+                        <div class="mb-4">
+                            <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-10 w-auto filter brightness-0 invert opacity-90">
+                        </div>
+                        <p class="font-medium text-slate-300 text-base mb-2">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</p>
+                        <p class="flex items-start gap-2 text-slate-400 max-w-md">
+                            <i data-lucide="map-pin" class="w-4 h-4 mt-1 shrink-0 text-carrier-lightblue"></i>
+                            1858/77-78 อาคารอินเตอร์ลิ้งค์ ทาวเวอร์ บางนา ชั้น 16 ถนนเทพรัตน กม.4.5 แขวงบางนาใต้ เขตบางนา กรุงเทพมหานคร 10260
+                        </p>
+                    </div>
+
+                    <!-- 2. เบอร์ติดต่อ -->
+                    <div class="flex flex-col sm:flex-row gap-8 lg:gap-16">
+                        <div>
+                            <h4 class="text-white font-semibold text-base mb-3 uppercase tracking-wide">ช่องทางการติดต่อ</h4>
+                            <p class="flex items-center gap-2 text-slate-400">
+                                <i data-lucide="phone" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
+                                โทร 1454 <span class="text-xs ml-1">(จันทร์ – ศุกร์ | 8:30-17:30)</span>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-base mb-3 uppercase tracking-wide">บริการหลังการขาย</h4>
+                            <p class="flex items-center gap-2 text-slate-400">
+                                <i data-lucide="phone-call" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
+                                โทร 1454 <span class="text-xs ml-1">(จันทร์ - เสาร์ | 8:30-17:30)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Bar -->
+                <div class="border-t border-slate-800 mt-12 pt-8 text-center text-xs text-slate-500">
+                    <p>COPYRIGHT © 2026 , B.GRIMM Carrier (Thailand) ALL RIGHTS RESERVED.</p>
+                </div>
+
             </div>
         </footer>
     </div>
@@ -414,13 +451,13 @@
                 <tr class="hover:bg-blue-50/40 transition-colors group bg-white">
                     <td class="p-2 align-middle">
                         <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
-                             ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'BOM: ${item.description}')"` : ''}>
+                             ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'BOM (No. ${item.no || '-'}): ${item.description}')"` : ''}>
                             <img src="${imgBOM}" onerror="this.onerror=null; this.src='${fallbackBOM}';" class="w-full h-full object-contain ${!item.imageUrlBOM ? 'opacity-70' : ''}">
                         </div>
                     </td>
                     <td class="p-2 align-middle">
                         <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
-                             ${item.imageUrlEPRAT ? `onclick="openImageModal('${imgEPRAT}', 'E-PART: ${item.description}')"` : ''}>
+                             ${item.imageUrlEPRAT ? `onclick="openImageModal('${imgEPRAT}', 'E-PART (No. ${item.no || '-'}): ${item.description}')"` : ''}>
                             <img src="${imgEPRAT}" onerror="this.onerror=null; this.src='${fallbackEPRAT}';" class="w-full h-full object-contain ${!item.imageUrlEPRAT ? 'opacity-70' : ''}">
                         </div>
                     </td>
