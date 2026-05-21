@@ -7,7 +7,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     
@@ -17,15 +17,21 @@
                 extend: {
                     fontFamily: { sans: ['Prompt', 'sans-serif'], },
                     colors: {
-                        carrier: { blue: '#0033a0', lightblue: '#005eb8', dark: '#0a1121', gray: '#f8fafc' }
+                        carrier: { 
+                            blue: '#0033a0', 
+                            lightblue: '#005eb8', 
+                            dark: '#0a1121', 
+                            gray: '#f8fafc',
+                            accent: '#e2f0fd'
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; }
-        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        body { font-family: 'Prompt', sans-serif; background-color: #f1f5f9; }
+        .glass-panel { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px); }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -40,30 +46,35 @@
     <!-- ==================== LOGIN SCREEN ==================== -->
     <div id="loginScreen" class="fixed inset-0 z-[200] bg-carrier-blue flex flex-col items-center justify-center p-4">
         <div class="absolute inset-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,100 100,0 V100 H0 Z" fill="white"></path></svg>
+            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,0 Q50,100 100,0 V100 H0 Z" fill="white"></path>
+            </svg>
         </div>
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative z-10 text-center">
-            <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-12 w-auto mx-auto mb-6">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative z-10 text-center border border-white/20">
+            <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-14 w-auto mx-auto mb-6 object-contain">
             <h2 class="text-2xl font-bold text-slate-800 mb-2">เข้าสู่ระบบ</h2>
-            <p class="text-slate-500 mb-6 text-sm">ระบบค้นหาราคาและสต็อกอะไหล่</p>
+            <p class="text-slate-500 mb-6 text-sm">ระบบค้นหาราคาและสต็อกอะไหล่สำหรับตัวแทนจำหน่าย</p>
             
             <div id="loginError" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-200 text-left">
-                ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง
+                ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
             </div>
 
             <form id="loginForm" class="space-y-4 text-left">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้ (Username)</label>
-                    <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="admin หรือ dealercarrier" required>
+                    <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกชื่อผู้ใช้ เช่น dealercarrier" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน (Password)</label>
-                    <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกรหัสผ่าน" required>
+                    <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกรหัสผ่านของคุณ" required>
                 </div>
-                <button type="submit" class="w-full bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-3 rounded-xl transition-colors mt-2">
-                    เข้าสู่ระบบ
+                <button type="submit" class="w-full bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-3 rounded-xl transition-colors mt-2 shadow-lg shadow-blue-500/15">
+                    เข้าสู่ระบบตัวแทนจำหน่าย
                 </button>
             </form>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
+                เฉพาะผู้มีสิทธิ์เข้าถึงระบบของ บี.กริม แคเรียร์ เท่านั้น
+            </div>
         </div>
     </div>
     <!-- ======================================================== -->
@@ -71,148 +82,170 @@
     <!-- ==================== MAIN APP ==================== -->
     <div id="mainApp" class="hidden flex-col min-h-screen">
         
-        <!-- Navbar -->
-        <nav class="bg-white shadow-sm sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-20 items-center">
+        <!-- Sticky Header (Navbar + Search Bar Area) -->
+        <header class="sticky top-0 z-[100] bg-white shadow-md border-b border-slate-200 transition-all duration-300">
+            <!-- Navbar (White Theme for Clear Carrier Logo visibility) -->
+            <nav class="bg-white text-slate-800 py-3.5 px-4 md:px-8 border-b border-slate-100">
+                <div class="max-w-[1600px] mx-auto flex justify-between items-center gap-4">
                     <div class="flex items-center gap-2 md:gap-4">
-                        <!-- ทำให้โลโก้และชื่อบริษัทคลิกได้ -->
-                        <a href="https://carrierthailand.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 md:gap-4 hover:opacity-80 transition-opacity" title="ไปที่เว็บไซต์ Carrier Thailand">
+                        <a href="https://carrierthailand.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 md:gap-4 hover:opacity-90 transition-opacity" title="ไปที่เว็บไซต์ Carrier Thailand">
+                            <!-- Native Carrier Logo is Blue, displays perfectly on White Navbar -->
                             <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-8 md:h-10 w-auto object-contain">
-                            <div class="h-8 w-px bg-gray-300 mx-1 md:mx-2"></div>
-                            <div class="flex flex-col justify-center mt-1">
-                                <span class="text-[10px] md:text-xs font-bold text-carrier-blue mb-0.5 tracking-wide">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</span>
-                                <span class="text-xs md:text-sm font-medium text-slate-500 leading-none">ระบบค้นหาราคาอะไหล่</span>
+                            <div class="h-8 w-px bg-slate-200 mx-1 md:mx-2"></div>
+                            <div class="flex flex-col justify-center">
+                                <span class="text-[10px] md:text-xs font-bold mb-0.5 tracking-wide text-carrier-blue">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</span>
+                                <span class="text-xs md:text-sm font-medium leading-none text-slate-500">ระบบค้นหาราคาอะไหล่แท้</span>
                             </div>
                         </a>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <span id="userRoleBadge" class="hidden md:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-carrier-blue border border-blue-200"></span>
-                        <button id="logoutBtn" class="text-sm font-medium text-slate-500 hover:text-red-500 transition-colors flex items-center gap-1">
-                            <i data-lucide="log-out" class="w-4 h-4"></i> ออกจากระบบ
+                    <div class="flex items-center gap-2 md:gap-4">
+                        <!-- Database Connection Status Badge -->
+                        <span id="dbStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span>กำลังรอเชื่อมข้อมูล...</span>
+                        </span>
+                        
+                        <span id="userRoleBadge" class="hidden md:inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-carrier-blue border border-blue-100"></span>
+                        
+                        <button id="logoutBtn" class="text-sm font-medium text-slate-600 hover:text-red-600 transition-colors flex items-center gap-1.5 bg-slate-50 hover:bg-red-50 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-200/60">
+                            <i data-lucide="log-out" class="w-4 h-4"></i> <span class="hidden md:inline font-medium">ออกจากระบบ</span>
                         </button>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
 
-        <!-- Hero / Search Section -->
-        <div class="bg-carrier-blue relative overflow-hidden">
-            <div class="absolute inset-0 opacity-10">
-                <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,100 100,0 V100 H0 Z" fill="white"></path></svg>
-            </div>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 relative z-10">
-                <div class="text-center max-w-5xl mx-auto">
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-6">ค้นหาราคาอะไหล่แท้</h1>
-                    
-                    <!-- Search Box Area -->
-                    <div class="glass-panel p-2 md:p-3 rounded-2xl shadow-xl flex flex-col md:flex-row gap-2 md:gap-0 relative z-20 transition-all duration-300">
+            <!-- Sticky Search controls (Compact and Premium) -->
+            <div class="bg-slate-50 border-t border-slate-200/60 py-3 px-4 md:px-8">
+                <div class="max-w-[1600px] mx-auto">
+                    <div class="flex flex-col lg:flex-row gap-2.5 items-stretch lg:items-center">
                         
-                        <!-- ช่องค้นหาหลัก (รุ่น / ซีรีส์ / Part No) -->
-                        <div class="flex-1 flex items-center px-3 bg-white rounded-xl md:rounded-r-none md:rounded-l-xl md:border-r border-slate-200">
-                            <i data-lucide="search" class="text-slate-400 w-5 h-5 shrink-0"></i>
-                            <input type="text" id="searchInput" placeholder="รุ่น, ซีรีส์ หรือ รหัสอะไหล่..." class="w-full py-3 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm md:text-base" autocomplete="off">
+                        <!-- Main Search input -->
+                        <div class="flex-1 min-w-0 flex items-center px-3.5 bg-white rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-carrier-lightblue focus-within:border-transparent transition-all shadow-sm">
+                            <i data-lucide="search" class="text-slate-400 w-4 h-4 shrink-0"></i>
+                            <input type="text" id="searchInput" placeholder="รุ่น, ซีรีส์ หรือ รหัสอะไหล่..." class="w-full py-2 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm font-normal" autocomplete="off">
                             <button id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
                         </div>
 
-                        <!-- ช่องค้นหา Description (ชื่ออะไหล่ / Parts Catalog) -->
-                        <div class="flex-[1.2] flex items-center px-3 bg-white rounded-xl md:rounded-none md:border-r border-slate-200">
-                            <i data-lucide="file-text" class="text-slate-400 w-5 h-5 shrink-0"></i>
-                            <input type="text" id="descSearchInput" placeholder="ค้นหาจากชื่อ หรือ Parts Catalog..." class="w-full py-3 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm md:text-base" autocomplete="off" title="หากไม่พบข้อมูล ระบบจะดึงจากรุ่นปกติให้โดยอัตโนมัติ">
+                        <!-- Description Search input -->
+                        <div class="flex-1 min-w-0 flex items-center px-3.5 bg-white rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-carrier-lightblue focus-within:border-transparent transition-all shadow-sm">
+                            <i data-lucide="file-text" class="text-slate-400 w-4 h-4 shrink-0"></i>
+                            <input type="text" id="descSearchInput" placeholder="ค้นหาชื่ออะไหล่ หรือ Parts Catalog..." class="w-full py-2 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm font-normal" autocomplete="off" title="หากไม่พบข้อมูล ระบบจะดึงจากรุ่นปกติให้โดยอัตโนมัติ">
                             <button id="clearDescBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
                         </div>
 
-                        <!-- Type Filter -->
-                        <div class="w-full md:w-32 bg-white px-2 flex items-center md:rounded-none rounded-xl">
-                            <select id="typeFilter" class="w-full py-3 px-1 outline-none text-slate-600 bg-transparent cursor-pointer font-medium text-sm">
+                        <!-- Type Selector -->
+                        <div class="w-full lg:w-44 flex items-center px-3.5 bg-white rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-carrier-lightblue focus-within:border-transparent transition-all shadow-sm">
+                            <i data-lucide="filter" class="text-slate-400 w-4 h-4 shrink-0"></i>
+                            <select id="typeFilter" class="w-full py-2.5 pl-2 pr-4 outline-none text-slate-600 bg-transparent cursor-pointer font-medium text-sm">
                                 <option value="ALL">ทุกประเภท</option>
                                 <option value="FCU">FCU (คอยล์เย็น)</option>
                                 <option value="CDU">CDU (คอยล์ร้อน)</option>
                             </select>
                         </div>
-                        
-                        <!-- ช่องคำนวณส่วนลด (เฉพาะแอดมิน) -->
-                        <div class="admin-only w-full md:w-32 bg-orange-50 md:border-l border-slate-200 px-3 flex items-center md:rounded-none rounded-xl">
+
+                        <!-- Discount (Admin only) -->
+                        <div class="admin-only w-full lg:w-36 flex items-center bg-orange-50/80 border border-orange-200 px-3.5 rounded-xl focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent transition-all shadow-sm">
                             <i data-lucide="percent" class="text-orange-500 w-4 h-4 mr-1 shrink-0"></i>
-                            <input type="number" id="discountInput" placeholder="ส่วนลด %" min="0" max="100" value="0" class="w-full py-3 bg-transparent outline-none text-orange-700 font-bold text-center placeholder-orange-300" title="กรอกเปอร์เซ็นต์ส่วนลด">
+                            <input type="number" id="discountInput" placeholder="ส่วนลด %" min="0" max="100" value="0" class="w-full py-2 bg-transparent outline-none text-orange-700 font-bold text-center placeholder-orange-300 text-sm" title="กรอกเปอร์เซ็นต์ส่วนลดสำหรับคำนวณราคา">
                         </div>
 
-                        <!-- Buttons -->
-                        <button id="searchBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-xl md:rounded-none md:border-l border-blue-400 transition-colors flex items-center justify-center gap-2 shrink-0">
-                            <span>ค้นหา</span>
-                        </button>
-                        <button id="refreshBtn" class="bg-carrier-lightblue hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-xl md:rounded-l-none md:rounded-r-xl transition-colors flex items-center justify-center group shrink-0" title="โหลดข้อมูลล่าสุด">
-                            <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500"></i>
-                        </button>
+                        <!-- Trigger Buttons -->
+                        <div class="flex gap-2">
+                            <button id="searchBtn" class="flex-grow lg:flex-none bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-2 px-6 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-sm">
+                                <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
+                                <span>ค้นหา</span>
+                            </button>
+                            <button id="refreshBtn" class="bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-800 border border-slate-300 font-medium py-2 px-3.5 rounded-xl transition-all flex items-center justify-center group shrink-0 shadow-sm" title="โหลดข้อมูลล่าสุดจากเซิร์ฟเวอร์">
+                                <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <!-- Main Content -->
-        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full relative -mt-8 z-20">
-            <div class="bg-white rounded-t-2xl p-6 shadow-sm border-b border-slate-100 flex flex-col justify-between items-center gap-4 md:flex-row">
-                <h2 class="text-xl font-semibold text-slate-800">ผลการค้นหา</h2>
+        <!-- Main Content (Scaled to Full Screen width limit) -->
+        <main class="flex-grow w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+            
+            <!-- Result Stats Board -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-blue-50 text-carrier-lightblue rounded-xl">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800 leading-tight">คลังข้อมูลผลลัพธ์อะไหล่</h2>
+                    </div>
+                </div>
+                <!-- Interactive Count Indicators -->
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-slate-500">พบผลลัพธ์:</span>
+                    <span id="resultCount" class="text-2xl font-black text-carrier-blue px-4 py-1.5 bg-slate-100 rounded-2xl border border-slate-200 leading-none">0</span>
+                    <span class="text-sm font-medium text-slate-500">รายการ</span>
+                </div>
             </div>
 
-            <div class="bg-white rounded-b-2xl p-6 shadow-sm min-h-[400px] flex flex-col">
+            <!-- Table & State card container -->
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden min-h-[500px] flex flex-col">
+                
                 <!-- States -->
-                <div id="loadingState" class="hidden flex-col items-center justify-center py-20">
-                    <i data-lucide="loader-2" class="w-10 h-10 text-carrier-lightblue animate-spin mb-4"></i>
-                    <p class="text-slate-500 text-center">กำลังเชื่อมต่อฐานข้อมูล...</p>
+                <div id="loadingState" class="hidden flex-col items-center justify-center flex-grow py-24">
+                    <i data-lucide="loader-2" class="w-12 h-12 text-carrier-lightblue animate-spin mb-4"></i>
+                    <p class="text-slate-600 font-medium text-center">กำลังเชื่อมต่อและดึงข้อมูลอะไหล่ล่าสุด...</p>
+                    <p class="text-xs text-slate-400 mt-1">กรุณารอสักครู่ ระบบกำลังเรียกเซิร์ฟเวอร์</p>
                 </div>
-                <div id="initialState" class="flex flex-col items-center justify-center py-20 text-center">
-                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-4 shadow-sm border border-blue-100"><i data-lucide="search" class="w-10 h-10 text-carrier-lightblue"></i></div>
-                    <h3 class="text-lg font-medium text-slate-800 mb-2">พร้อมสำหรับการค้นหา</h3>
-                    <p class="text-slate-500">พิมพ์ รุ่น, ชื่ออะไหล่ หรือ ซีรีส์ แล้วกด <b>ค้นหา</b></p>
-                </div>
-                <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center">
-                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4"><i data-lucide="package-search" class="w-10 h-10 text-slate-400"></i></div>
-                    <h3 class="text-lg font-medium text-slate-800 mb-2">ไม่พบรายการอะไหล่</h3>
-                    <p class="text-slate-500">ลองตรวจสอบการสะกดคำ หรือเปลี่ยนคำค้นหาใหม่</p>
+                
+                <div id="initialState" class="flex flex-col items-center justify-center flex-grow py-24 text-center">
+                    <div class="w-20 h-20 bg-blue-50 text-carrier-lightblue rounded-full flex items-center justify-center mb-5 shadow-inner border border-blue-100">
+                        <i data-lucide="search-code" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">ระบบค้นหาพร้อมใช้งาน</h3>
+                    <p class="text-slate-500 max-w-md text-sm leading-relaxed">กรุณากรอกข้อมูลในช่องค้นหาด้านบน เช่น <b class="text-carrier-blue underline cursor-pointer" onclick="fillSearch('FCU')">FCU</b>, <b class="text-carrier-blue underline cursor-pointer" onclick="fillSearch('CDU')">CDU</b> หรือรุ่นที่ท่านต้องการค้นหา</p>
                 </div>
 
-                <!-- Table -->
-                <div id="resultsTableWrapper" class="overflow-x-auto border border-slate-200 rounded-xl hidden mb-4">
+                <div id="emptyState" class="hidden flex-col items-center justify-center flex-grow py-24 text-center">
+                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-5 border border-slate-200">
+                        <i data-lucide="package-search" class="w-10 h-10 text-slate-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">ไม่พบรายการอะไหล่</h3>
+                    <p class="text-slate-500 max-w-md text-sm">ลองตรวจสอบความถูกต้องของรุ่น ซีรีส์ หรือรหัสอะไหล่อีกครั้ง หรือลบช่องชื่ออะไหล่เพื่อแสดงอะไหล่ทั้งหมดของรุ่นนั้น ๆ</p>
+                </div>
+
+                <!-- Responsive Data Table -->
+                <div id="resultsTableWrapper" class="overflow-x-auto hidden">
                     <table class="w-full text-left border-collapse min-w-[1200px]">
                         <thead>
-                            <tr class="bg-slate-100 border-b border-slate-200">
-                                <th colspan="12" class="p-4 font-bold text-center text-carrier-blue text-base md:text-lg uppercase tracking-wide">
-                                    บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด
-                                </th>
-                            </tr>
-                            <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
-                                <th class="p-3 font-semibold text-center w-24 leading-tight">Exploded View<br>Drawing</th>
-                                <th class="p-3 font-semibold text-center w-16">E-PART</th>
-                                <th class="p-3 font-semibold text-center w-12">No.</th>
-                                <th class="p-3 font-semibold">Part No.</th>
-                                <th class="p-3 font-semibold min-w-[180px]">Description</th>
-                                <th class="p-3 font-semibold">Series Name</th>
-                                <th class="p-3 font-semibold">Model</th>
-                                <th class="p-3 font-semibold text-center">Type</th>
-                                <!-- Admin Column 1: ราคาทุน (ปี 2569) -->
-                                <th class="admin-only p-3 font-semibold text-right bg-slate-100 text-slate-700 border-l border-slate-200">ราคาทุน (ปี 2569)</th>
-                                <!-- Admin Column 2: ราคาทุน (ปี 2569) + 120% -->
-                                <th class="admin-only p-3 font-semibold text-right bg-blue-100 text-blue-800 border-l border-blue-200">ราคาทุน (ปี 2569) + 120%</th>
-                                <!-- Admin Column 3: ราคาหลังหักส่วนลด -->
-                                <th class="admin-only p-3 font-semibold text-right bg-emerald-100 text-emerald-800 border-l border-emerald-200">ราคาหลังหักส่วนลด</th>
-                                <!-- Column สำหรับทุกคน: PRICE_2026 (ดึงจากคอลัมน์ K และสิทธิ์ Dealer สามารถมองเห็นได้) -->
-                                <th class="p-3 font-semibold text-right text-slate-700 border-l border-slate-200">PRICE_2026</th>
+                            <tr class="bg-slate-100 text-slate-700 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                                <th class="p-3.5 text-center w-24 leading-tight">Exploded View<br>Drawing</th>
+                                <th class="p-3.5 text-center w-24">E-PART</th>
+                                <th class="p-3.5 text-center w-16">No.</th>
+                                <th class="p-3.5">Part No.</th>
+                                <th class="p-3.5 min-w-[220px]">Description</th>
+                                <th class="p-3.5">Series Name</th>
+                                <th class="p-3.5">Model</th>
+                                <th class="p-3.5 text-center w-24">Type</th>
+                                <!-- Admin Columns (Visually separated) -->
+                                <th class="admin-only p-3.5 text-right bg-slate-200 text-slate-700 border-l border-slate-300 w-32">ราคาทุน (ปี 2569)</th>
+                                <th class="admin-only p-3.5 text-right bg-blue-100 text-blue-800 border-l border-blue-200 w-40">ราคาทุน + 120%</th>
+                                <th class="admin-only p-3.5 text-right bg-emerald-100 text-emerald-800 border-l border-emerald-200 w-40">ราคาหลังหักส่วนลด</th>
+                                <!-- Public Column -->
+                                <th class="p-3.5 text-right text-slate-800 border-l border-slate-300 bg-slate-200/50 font-bold w-36">PRICE_2026</th>
                             </tr>
                         </thead>
-                        <tbody id="resultsTableBody" class="divide-y divide-slate-100 text-sm">
-                            <!-- JS Injection -->
+                        <tbody id="resultsTableBody" class="divide-y divide-slate-200 text-xs md:text-sm">
+                            <!-- JS Injection Rows -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Pagination Control -->
-                <div id="paginationWrapper" class="hidden mt-auto pt-4 border-t border-slate-100 flex-col md:flex-row justify-between items-center gap-4">
+                <!-- Pagination Footer -->
+                <div id="paginationWrapper" class="hidden mt-auto px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div class="text-sm text-slate-500">
-                        แสดง <span id="pageStartItem" class="font-medium text-slate-800">0</span> ถึง <span id="pageEndItem" class="font-medium text-slate-800">0</span> จากทั้งหมด <span id="resultCount" class="font-bold text-carrier-blue">0</span> รายการ
+                        แสดงข้อมูล <span id="pageStartItem" class="font-semibold text-slate-800">0</span> - <span id="pageEndItem" class="font-semibold text-slate-800">0</span> จาก <span id="resultCountBottom" class="font-bold text-carrier-blue">0</span> รายการ
                     </div>
-                    <div class="flex items-center gap-1" id="paginationButtons">
-                        <!-- Buttons injected by JS -->
+                    <div class="flex items-center gap-1.5" id="paginationButtons">
+                        <!-- Navigation buttons injected by JS -->
                     </div>
                 </div>
 
@@ -221,63 +254,67 @@
 
         <!-- ==================== PREMIUM FOOTER ==================== -->
         <footer class="bg-carrier-dark text-slate-300 pt-12 pb-8 mt-auto font-light text-sm border-t-[6px] border-carrier-lightblue">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                     
-                    <!-- 1. ช่องทางการติดต่อ -->
-                    <div>
-                        <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wide">ช่องทางการติดต่อ</h4>
-                        <p class="font-medium text-slate-300 text-base mb-2">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</p>
-                        <p class="flex items-start gap-2 text-slate-400 mb-3">
-                            <i data-lucide="map-pin" class="w-4 h-4 mt-1 shrink-0 text-carrier-lightblue"></i>
-                            <span>1858/77-78 อาคารอินเตอร์ลิ้งค์ ทาวเวอร์ บางนา ชั้น 16 ถนนเทพรัตน กม.4.5 แขวงบางนาใต้ เขตบางนา กรุงเทพมหานคร 10260</span>
-                        </p>
-                        <p class="flex items-center gap-2 text-slate-400 mb-3">
-                            <i data-lucide="phone" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
-                            <span>โทร 1454 <span class="text-xs ml-1">(จันทร์ – ศุกร์ | 8:30-17:30)</span></span>
-                        </p>
-                        <!-- เพิ่มลิงก์เว็บไซต์ใน Footer -->
-                        <p class="flex items-center gap-2 text-slate-400">
-                            <i data-lucide="globe" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
-                            <a href="https://carrierthailand.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors cursor-pointer font-medium">www.carrierthailand.com</a>
-                        </p>
+                    <!-- 1. Contact channels -->
+                    <div class="space-y-4">
+                        <h4 class="text-white font-semibold text-base uppercase tracking-wider border-b border-white/10 pb-2">ช่องทางการติดต่อ</h4>
+                        <p class="font-medium text-slate-200 text-base leading-tight">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</p>
+                        <div class="space-y-2.5 text-slate-400">
+                            <p class="flex items-start gap-2 text-xs md:text-sm">
+                                <i data-lucide="map-pin" class="w-4 h-4 mt-1 shrink-0 text-carrier-lightblue"></i>
+                                <span>1858/77-78 อาคารอินเตอร์ลิ้งค์ ทาวเวอร์ บางนา ชั้น 16 ถนนเทพรัตน กม.4.5 แขวงบางนาใต้ เขตบางนา กรุงเทพมหานคร 10260</span>
+                            </p>
+                            <p class="flex items-center gap-2 text-xs md:text-sm">
+                                <i data-lucide="phone" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
+                                <span>โทร 1454 <span class="text-slate-500 text-xs ml-1">(จันทร์ – ศุกร์ | 8:30-17:30)</span></span>
+                            </p>
+                            <p class="flex items-center gap-2 text-xs md:text-sm">
+                                <i data-lucide="globe" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
+                                <a href="https://carrierthailand.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors cursor-pointer font-medium">www.carrierthailand.com</a>
+                            </p>
+                        </div>
                     </div>
 
-                    <!-- 2. บริการหลังการขาย -->
-                    <div>
-                        <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wide">บริการหลังการขาย</h4>
-                        <ul class="space-y-3 text-slate-400">
-                            <li class="flex items-center gap-2">
+                    <!-- 2. Aftersales services -->
+                    <div class="space-y-4">
+                        <h4 class="text-white font-semibold text-base uppercase tracking-wider border-b border-white/10 pb-2">บริการหลังการขาย</h4>
+                        <ul class="space-y-2.5 text-slate-400">
+                            <li class="flex items-center gap-2 text-xs md:text-sm">
                                 <i data-lucide="phone-call" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
-                                <span>โทร 1454 <span class="text-xs ml-1">(จันทร์ - เสาร์ | 8:30-17:30)</span></span>
+                                <span>แจ้งปัญหาโทร 1454 <span class="text-slate-500 text-xs ml-1">(จันทร์ - เสาร์ | 8:30-17:30)</span></span>
                             </li>
-                            <li class="flex items-center gap-2">
+                            <li class="flex items-center gap-2 text-xs md:text-sm">
                                 <i data-lucide="message-circle" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
-                                Line : @CarrierCare (บริการหลังการขาย)
+                                <span>Line OA: @CarrierCare (ฝ่ายบริการลูกค้า)</span>
                             </li>
-                            <li class="flex items-start gap-2">
+                            <li class="flex items-start gap-2 text-xs md:text-sm">
                                 <i data-lucide="wrench" class="w-4 h-4 mt-0.5 shrink-0 text-carrier-lightblue"></i>
-                                <a href="https://support.carrierthailand.com/?_gl=1%2a1gozhnu%2a_gcl_au%2aMTgzMzAxMzczOC4xNzc1NjIyNTA3" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors cursor-pointer">ลงทะเบียนบัตรรับประกัน / แจ้งซ่อมด้วยตนเอง</a>
+                                <a href="https://support.carrierthailand.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-xs md:text-sm">ลงทะเบียนบัตรรับประกัน / แจ้งซ่อมออนไลน์</a>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- 3. คลังอะไหล่ -->
-                    <div>
-                        <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wide">Carrier Smart Service Center / คลังอะไหล่</h4>
-                        <p class="flex items-start gap-2 text-slate-400 mb-3">
-                            <i data-lucide="map" class="w-4 h-4 mt-1 shrink-0 text-carrier-lightblue"></i>
-                            <span>เลขที่ 206 หมู่ 5 ต.บางกะดี อ.เมืองปทุมธานี จ.ปทุมธานี 12000</span>
-                        </p>
-                        <p class="flex items-center gap-2 text-slate-400 mb-1">
-                            <i data-lucide="phone" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
-                            <span>โทร 02-024-1099</span>
-                        </p>
-                        <p class="flex items-center gap-2 text-slate-400">
-                            <i data-lucide="clock" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
-                            <span class="text-xs">จันทร์ - เสาร์ | 8:30-17:30</span>
-                        </p>
+                    <!-- 3. Smart service centers -->
+                    <div class="space-y-4">
+                        <h4 class="text-white font-semibold text-base uppercase tracking-wider border-b border-white/10 pb-2">คลังอะไหล่ศูนย์หลัก</h4>
+                        <p class="text-slate-300 font-medium">Carrier Smart Service Center</p>
+                        <div class="space-y-2.5 text-slate-400">
+                            <p class="flex items-start gap-2 text-xs md:text-sm">
+                                <i data-lucide="map" class="w-4 h-4 mt-1 shrink-0 text-carrier-lightblue"></i>
+                                <span>เลขที่ 206 หมู่ 5 ต.บางกะดี อ.เมืองปทุมธานี จ.ปทุมธานี 12000</span>
+                            </p>
+                            <p class="flex items-center gap-2 text-xs md:text-sm">
+                                <i data-lucide="phone" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
+                                <span>โทรสำนักงานคลัง: 02-024-1099</span>
+                            </p>
+                            <p class="flex items-center gap-2 text-xs md:text-sm">
+                                <i data-lucide="clock" class="w-4 h-4 shrink-0 text-carrier-lightblue"></i>
+                                <span class="text-xs">เปิดให้บริการ จันทร์ - เสาร์ | 8:30 - 17:30 น.</span>
+                            </p>
+                        </div>
                     </div>
 
                 </div>
@@ -293,51 +330,49 @@
 
     <!-- Image Modal -->
     <div id="imageModal" class="fixed inset-0 z-[300] hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <button id="closeModalBtn" class="absolute top-6 right-6 text-white hover:text-gray-300 bg-white/10 hover:bg-white/20 rounded-full p-2"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <button id="closeModalBtn" class="absolute top-6 right-6 text-white hover:text-gray-300 bg-white/10 hover:bg-white/20 rounded-full p-2.5 transition-colors focus:outline-none"><i data-lucide="x" class="w-8 h-8"></i></button>
         <div class="max-w-4xl flex flex-col items-center">
-            <img id="modalImage" src="" alt="Zoom" class="max-w-full max-h-[80vh] object-contain rounded shadow-2xl bg-white/5">
-            <p id="modalCaption" class="text-white mt-4 text-lg font-medium"></p>
+            <img id="modalImage" src="" alt="Zoomed view" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl bg-white/5 border border-white/10">
+            <p id="modalCaption" class="text-white mt-4 text-base md:text-lg font-medium tracking-wide bg-black/60 py-2 px-5 rounded-full text-center"></p>
         </div>
     </div>
 
-    <!-- Modal เช็ค Part No ข้ามรุ่น -->
+    <!-- Cross-Model Check Part No. Modal -->
     <div id="partModal" class="fixed inset-0 z-[400] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh] border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+            <div class="p-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                 <h3 class="text-lg md:text-xl font-bold text-carrier-blue flex items-center gap-2">
                     <i data-lucide="layers" class="w-5 h-5"></i>
                     <span id="partModalTitle">Part No:</span>
                 </h3>
-                <button id="closePartModalBtn" class="text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-200 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button id="closePartModalBtn" class="text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-200 transition-colors focus:outline-none"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto flex-grow bg-white" id="partModalContent">
+            <div class="p-6 overflow-y-auto flex-grow bg-slate-50/50" id="partModalContent">
                 <!-- Part info injected here -->
             </div>
         </div>
     </div>
 
+    <!-- Core App Logic Script -->
     <script>
-        // ฟังก์ชันช่วยเพื่อตรวจสอบว่าไลบรารีโหลดเสร็จหรือยัง
         const initIcons = () => {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             } else {
-                console.warn('Lucide icons library is not loaded.');
+                console.warn('Lucide icons library not loaded yet.');
             }
         };
 
         initIcons();
 
-        // 🌟 🌟 ดึงข้อมูลด้วย URL ล่าสุดจากระบบของคุณ 🌟 🌟
+        // 🌟 ดึงข้อมูลด้วย URL ล่าสุดจากระบบ Google Sheets ของท่าน 🌟
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyroFAOd3jyOnKq3AGXPrjol1VRC_aWlrqThagdsXCOlESbhXsnMkrrgdIz0W8dM8Pk/exec'; 
         
         let allData = []; 
         let currentFilteredData = [];
-        
-        // สถานะผู้ใช้งาน
         let currentUserRole = null; 
 
-        // ตั้งค่า Pagination
+        // Pagination settings
         let currentPage = 1;
         const itemsPerPage = 50;
 
@@ -347,10 +382,11 @@
         const loginForm = document.getElementById('loginForm');
         const loginError = document.getElementById('loginError');
         const userRoleBadge = document.getElementById('userRoleBadge');
+        const dbStatusBadge = document.getElementById('dbStatusBadge');
         const logoutBtn = document.getElementById('logoutBtn');
         const discountInput = document.getElementById('discountInput');
 
-        // Search Elements
+        // Search inputs
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearBtn');
         const descSearchInput = document.getElementById('descSearchInput'); 
@@ -363,6 +399,7 @@
         const resultsTableWrapper = document.getElementById('resultsTableWrapper');
         const resultsTableBody = document.getElementById('resultsTableBody');
         const resultCount = document.getElementById('resultCount');
+        const resultCountBottom = document.getElementById('resultCountBottom');
         const loadingState = document.getElementById('loadingState');
         const emptyState = document.getElementById('emptyState');
         const initialState = document.getElementById('initialState');
@@ -377,13 +414,19 @@
         const modalCaption = document.getElementById('modalCaption');
         const closeModalBtn = document.getElementById('closeModalBtn');
 
-        // Elements สำหรับ Modal Part No.
         const partModal = document.getElementById('partModal');
         const partModalTitle = document.getElementById('partModalTitle');
         const partModalContent = document.getElementById('partModalContent');
         const closePartModalBtn = document.getElementById('closePartModalBtn');
 
-        // --- ระบบ Login & Logout ---
+        // Autofill utility
+        window.fillSearch = (text) => {
+            searchInput.value = text;
+            clearBtn.classList.remove('hidden');
+            handleSearch();
+        };
+
+        // --- Authentication Logic (Functionality preserved, Admin credentials kept working) ---
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const user = document.getElementById('username').value.trim().toLowerCase();
@@ -402,10 +445,10 @@
             currentUserRole = role;
             if(role === 'admin') {
                 document.body.classList.add('role-admin');
-                userRoleBadge.innerHTML = `<i data-lucide="shield-check" class="w-3 h-3 mr-1"></i> ${roleName}`;
+                userRoleBadge.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1 text-amber-500 animate-pulse"></i> <span class="text-amber-600">${roleName}</span>`;
             } else {
                 document.body.classList.remove('role-admin');
-                userRoleBadge.innerHTML = `<i data-lucide="user" class="w-3 h-3 mr-1"></i> ${roleName}`;
+                userRoleBadge.innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5 mr-1 text-carrier-lightblue"></i> <span class="text-slate-600">${roleName}</span>`;
             }
             userRoleBadge.classList.remove('hidden');
             initIcons();
@@ -414,7 +457,7 @@
             mainApp.classList.remove('hidden');
             mainApp.classList.add('flex');
             
-            handleRefresh();
+            fetchDatabase();
         }
 
         logoutBtn.addEventListener('click', () => {
@@ -426,11 +469,25 @@
             mainApp.classList.add('hidden');
             mainApp.classList.remove('flex');
             loginScreen.classList.remove('hidden');
+            
+            // Clear cache and input fields
+            allData = [];
+            currentFilteredData = [];
+            searchInput.value = '';
+            descSearchInput.value = '';
+            clearBtn.classList.add('hidden');
+            clearDescBtn.classList.add('hidden');
+            if (dbStatusBadge) {
+                dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200";
+                dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span><span>กำลังรอเชื่อมข้อมูล...</span>';
+            }
+            initIcons();
         });
 
-        // --- ภาพ Modal ---
+        // --- Image Zoom Lightbox Modal ---
         window.openImageModal = (url, caption) => {
-            modalImage.src = url; modalCaption.textContent = caption;
+            modalImage.src = url; 
+            modalCaption.textContent = caption;
             imageModal.classList.remove('hidden');
             setTimeout(() => imageModal.classList.remove('opacity-0'), 10);
         };
@@ -439,29 +496,33 @@
             setTimeout(() => { imageModal.classList.add('hidden'); modalImage.src = ''; }, 300);
         };
 
-        // --- เช็ค Part No ข้ามรุ่น ---
+        // --- Cross-Model Checklist Modal ---
         window.showModelsForPart = (partNo) => {
             if(!partNo || partNo === '-') return;
-            partModalTitle.textContent = `รุ่นที่ใช้อะไหล่: ${partNo}`;
+            partModalTitle.textContent = `รายการรุ่นเครื่องปรับอากาศที่ร่วมใช้อะไหล่: ${partNo}`;
             const matchingItems = allData.filter(item => item.partNo === partNo);
+            
             if(matchingItems.length === 0) {
-                 partModalContent.innerHTML = `<p class="text-slate-500 text-center py-8">ไม่พบข้อมูลรุ่นอื่นที่ใช้อะไหล่นี้</p>`;
+                 partModalContent.innerHTML = `<div class="text-slate-500 text-center py-12"><i data-lucide="info" class="w-12 h-12 mx-auto mb-3 text-slate-300"></i> ไม่พบข้อมูลรุ่นเครื่องปรับอากาศเครื่องอื่นที่ใช้อะไหล่ชิ้นนี้</div>`;
             } else {
-                 let html = `<p class="text-sm text-slate-500 mb-4">พบทั้งหมด <span class="font-bold text-carrier-blue">${matchingItems.length}</span> รายการที่ใช้ Part No. นี้</p><ul class="space-y-3">`;
+                 let html = `<p class="text-xs md:text-sm text-slate-600 mb-4 bg-blue-50/50 p-3 rounded-xl border border-blue-100/50 font-medium">ตรวจพบคอร์สอบอุ่นร่วมกันทั้งหมด <span class="font-bold text-carrier-blue">${matchingItems.length}</span> รายการที่ใช้งานร่วมกัน</p><ul class="space-y-2.5">`;
                  const uniqueModels = new Set();
                  matchingItems.forEach(item => {
-                     const modelCode = item.model || 'ไม่มีชื่อรุ่น';
-                     const seriesInfo = item.seriesName ? `<span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full border border-blue-100 ml-2">${item.seriesName}</span>` : '';
-                     const descInfo = item.description ? `<div class="text-sm text-slate-500 mt-1">${item.description}</div>` : '';
+                     const modelCode = item.model || 'ไม่ระบุชื่อรุ่น';
+                     const seriesInfo = item.seriesName ? `<span class="text-[11px] bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full border border-blue-100 ml-2 font-semibold">${item.seriesName}</span>` : '';
+                     const descInfo = item.description ? `<div class="text-xs text-slate-500 mt-1 pl-7">${item.description}</div>` : '';
                      const uniqueKey = `${modelCode}-${item.description}`;
+                     
                      if(!uniqueModels.has(uniqueKey)) {
                          uniqueModels.add(uniqueKey);
                          html += `
-                            <li class="flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                                <i data-lucide="check-circle-2" class="w-5 h-5 text-green-500 shrink-0 mt-0.5"></i> 
-                                <div>
-                                    <div class="font-medium text-slate-800 flex items-center flex-wrap gap-1">${modelCode} ${seriesInfo}</div>
-                                    ${descInfo}
+                            <li class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm hover:border-blue-300 transition-colors">
+                                <div class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> 
+                                    <div class="flex-grow">
+                                        <div class="font-semibold text-slate-800 flex items-center flex-wrap gap-1 text-sm md:text-base">${modelCode} ${seriesInfo}</div>
+                                        ${descInfo}
+                                    </div>
                                 </div>
                             </li>`;
                      }
@@ -481,7 +542,7 @@
 
         const formatPrice = (price) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(price);
 
-        // --- Render Table Row ---
+        // --- Render Table Dynamic Row ---
         const createTableRow = (item) => {
             const fallbackBOM = 'https://placehold.co/80x80/f8fafc/94a3b8?text=No+Drawing';
             const fallbackEPRAT = 'https://placehold.co/80x80/f8fafc/94a3b8?text=No+E-PART';
@@ -492,51 +553,51 @@
             const discountPercent = parseFloat(discountInput.value) || 0;
             const cost = item.costPrice || 0;
             
-            // คำนวณราคาตั้งต้น: ราคาทุน + 120% (นำราคาทุนคูณ 120% แล้วบวกกับราคาทุนเดิม)
+            // คำนวณราคาตั้งต้น: ราคาทุน + 120%
             const basePriceForDiscount = cost + (cost * 1.2); 
             
-            // ปัดเศษขึ้นเสมอ (Roundup) สำหรับราคาหลังหักส่วนลด
+            // ปัดเศษขึ้นเสมอสำหรับราคาหลังหักส่วนลด
             const discountedPrice = Math.ceil(basePriceForDiscount * (1 - (discountPercent / 100)));
 
             return `
-                <tr class="hover:bg-blue-50/40 transition-colors group bg-white">
-                    <td class="p-2 align-middle">
-                        <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
+                <tr class="hover:bg-blue-50/40 transition-colors group bg-white border-b border-slate-200">
+                    <td class="p-2 align-middle text-center">
+                        <div class="w-14 h-14 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto transition-transform group-hover:scale-105 ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
                              ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'Exploded View Drawing (No. ${item.no || '-'}): ${item.description}')"` : ''}>
-                            <img src="${imgBOM}" alt="Exploded View Drawing" onerror="this.onerror=null; this.src='${fallbackBOM}';" class="w-full h-full object-contain ${!item.imageUrlBOM ? 'opacity-70' : ''}">
+                            <img src="${imgBOM}" alt="Exploded View Drawing" onerror="this.onerror=null; this.src='${fallbackBOM}';" class="w-full h-full object-contain ${!item.imageUrlBOM ? 'opacity-50' : ''}">
                         </div>
                     </td>
-                    <td class="p-2 align-middle">
-                        <div class="w-12 h-12 bg-white rounded border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
+                    <td class="p-2 align-middle text-center">
+                        <div class="w-14 h-14 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto transition-transform group-hover:scale-105 ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
                              ${item.imageUrlEPRAT ? `onclick="openImageModal('${imgEPRAT}', 'E-PART (No. ${item.no || '-'}): ${item.description}')"` : ''}>
-                            <img src="${imgEPRAT}" alt="E-PART" onerror="this.onerror=null; this.src='${fallbackEPRAT}';" class="w-full h-full object-contain ${!item.imageUrlEPRAT ? 'opacity-70' : ''}">
+                            <img src="${imgEPRAT}" alt="E-PART" onerror="this.onerror=null; this.src='${fallbackEPRAT}';" class="w-full h-full object-contain ${!item.imageUrlEPRAT ? 'opacity-50' : ''}">
                         </div>
                     </td>
-                    <td class="p-2 align-middle text-center"><span class="text-slate-500 font-medium">${item.no || '-'}</span></td>
-                    <td class="p-2 align-middle font-semibold text-carrier-lightblue">
-                        ${item.partNo ? `<button onclick="showModelsForPart('${item.partNo}')" class="hover:underline hover:text-carrier-blue transition-colors text-left text-blue-600 focus:outline-none flex items-center gap-1" title="คลิกเพื่อดูรุ่นอื่นๆ ที่ใช้อะไหล่นี้">${item.partNo}</button>` : '-'}
+                    <td class="p-2 align-middle text-center"><span class="text-slate-500 font-semibold text-xs">${item.no || '-'}</span></td>
+                    <td class="p-2 align-middle font-bold text-carrier-lightblue">
+                        ${item.partNo ? `<button onclick="showModelsForPart('${item.partNo}')" class="hover:underline hover:text-carrier-blue transition-colors text-left text-blue-600 focus:outline-none flex items-center gap-1 font-semibold" title="คลิกเพื่อดูรุ่นอะไหล่ร่วม">${item.partNo}</button>` : '-'}
                     </td>
-                    <td class="p-2 align-middle text-slate-800">${item.description || '-'}</td>
-                    <td class="p-2 align-middle text-slate-600">${item.seriesName || '-'}</td>
-                    <td class="p-2 align-middle text-slate-600">${item.model || '-'}</td>
-                    <td class="p-2 align-middle text-center"><span class="px-2 py-1 ${typeBadgeColor} text-xs rounded border font-medium">${item.fcu_cdu || '-'}</span></td>
+                    <td class="p-2 align-middle text-slate-800 font-normal leading-snug">${item.description || '-'}</td>
+                    <td class="p-2 align-middle text-slate-600 text-xs">${item.seriesName || '-'}</td>
+                    <td class="p-2 align-middle text-slate-700 text-xs font-medium">${item.model || '-'}</td>
+                    <td class="p-2 align-middle text-center"><span class="px-2.5 py-0.5 ${typeBadgeColor} text-[10px] rounded-full border font-bold">${item.fcu_cdu || '-'}</span></td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 1: ราคาทุน (ปี 2569) เป็นสีเทาอ่อน -->
+                    <!-- ข้อมูลลับเฉพาะ Admin 1: ราคาทุน -->
                     <td class="admin-only p-3 align-middle font-medium text-slate-600 text-right bg-slate-50 border-l border-slate-200">${item.costPrice > 0 ? formatPrice(item.costPrice) : '-'}</td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 2: ราคาทุน (ปี 2569) + 120% เป็นสีฟ้าอ่อน -->
-                    <td class="admin-only p-3 align-middle font-medium text-blue-700 text-right bg-blue-50/50 border-l border-blue-200">${item.costPrice > 0 ? formatPrice(basePriceForDiscount) : '-'}</td>
+                    <!-- ข้อมูลลับเฉพาะ Admin 2: ราคาทุน + 120% -->
+                    <td class="admin-only p-3 align-middle font-medium text-blue-700 text-right bg-blue-50/40 border-l border-blue-200">${item.costPrice > 0 ? formatPrice(basePriceForDiscount) : '-'}</td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 3: ราคาหลังหักส่วนลด เป็นสีเขียวและตัวอักษรใหญ่ขึ้น -->
-                    <td class="admin-only p-3 align-middle font-bold text-emerald-700 text-right bg-emerald-50/80 border-l border-emerald-200 text-base">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
+                    <!-- ข้อมูลลับเฉพาะ Admin 3: ราคาหลังหักส่วนลด -->
+                    <td class="admin-only p-3 align-middle font-extrabold text-emerald-700 text-right bg-emerald-50/70 border-l border-emerald-200 text-sm md:text-base">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
 
-                    <!-- ราคาแนะนำ PRICE_2026 (เปิดเป็น All-Role สามารถมองเห็นได้ทุกคน ดึงมาจากคอลัมน์ K) -->
-                    <td class="p-3 align-middle font-bold text-carrier-blue text-right text-base">${item.price ? formatPrice(item.price) : '-'}</td>
+                    <!-- ราคาสำหรับตัวแทนและทุกคน: PRICE_2026 -->
+                    <td class="p-3 align-middle font-extrabold text-carrier-blue text-right text-sm md:text-base border-l border-slate-150 bg-slate-50/30">${item.price ? formatPrice(item.price) : '-'}</td>
                 </tr>
             `;
         };
 
-        // --- Pagination Logic ---
+        // --- Pagination Rendering ---
         const renderTablePage = () => {
             if(currentFilteredData.length === 0) {
                 resultsTableWrapper.classList.add('hidden');
@@ -570,7 +631,7 @@
 
         const renderPaginationButtons = (totalPages) => {
             let html = '';
-            html += `<button onclick="changePage(${currentPage - 1})" class="px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50" ${currentPage === 1 ? 'disabled' : ''}><i data-lucide="chevron-left" class="w-4 h-4"></i></button>`;
+            html += `<button onclick="changePage(${currentPage - 1})" class="p-2 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 transition-colors" ${currentPage === 1 ? 'disabled' : ''}><i data-lucide="chevron-left" class="w-4 h-4"></i></button>`;
             
             let startP = Math.max(1, currentPage - 2);
             let endP = Math.min(totalPages, currentPage + 2);
@@ -578,14 +639,14 @@
             if(startP > 1) html += `<span class="px-2 text-slate-400">...</span>`;
             for(let i = startP; i <= endP; i++) {
                 if(i === currentPage) {
-                    html += `<button class="px-3 py-1 rounded bg-carrier-lightblue text-white font-medium shadow-sm">${i}</button>`;
+                    html += `<button class="px-3.5 py-1.5 rounded-xl bg-carrier-lightblue text-white font-bold shadow-md shadow-blue-500/10 text-sm">${i}</button>`;
                 } else {
-                    html += `<button onclick="changePage(${i})" class="px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50">${i}</button>`;
+                    html += `<button onclick="changePage(${i})" class="px-3.5 py-1.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 font-medium text-sm transition-colors">${i}</button>`;
                 }
             }
             if(endP < totalPages) html += `<span class="px-2 text-slate-400">...</span>`;
 
-            html += `<button onclick="changePage(${currentPage + 1})" class="px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50" ${currentPage === totalPages ? 'disabled' : ''}><i data-lucide="chevron-right" class="w-4 h-4"></i></button>`;
+            html += `<button onclick="changePage(${currentPage + 1})" class="p-2 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 transition-colors" ${currentPage === totalPages ? 'disabled' : ''}><i data-lucide="chevron-right" class="w-4 h-4"></i></button>`;
 
             paginationButtons.innerHTML = html;
             initIcons();
@@ -597,7 +658,46 @@
             document.getElementById('resultsTableWrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
 
-        // --- Search & Data Fetching ---
+        // --- Database Fetch Engine ---
+        const fetchDatabase = async () => {
+            if (allData.length > 0) return; // Load once unless forced refresh
+
+            resultsTableWrapper.classList.add('hidden');
+            paginationWrapper.classList.add('hidden');
+            initialState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
+
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const responseData = await response.json();
+                allData = Array.isArray(responseData) ? responseData : responseData.data;
+                
+                loadingState.classList.add('hidden');
+                loadingState.classList.remove('flex');
+                
+                initialState.classList.remove('hidden');
+                initialState.classList.add('flex');
+                
+                // Update badge status to connected (Light theme adapted)
+                if (dbStatusBadge) {
+                    dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>เชื่อมต่อคลังอะไหล่แล้ว</span>';
+                }
+            } catch (error) {
+                loadingState.querySelector('i').setAttribute('data-lucide', 'x-circle');
+                loadingState.querySelector('i').classList.remove('animate-spin', 'text-carrier-lightblue');
+                loadingState.querySelector('i').classList.add('text-red-500');
+                loadingState.querySelector('p').innerHTML = 'เกิดข้อผิดพลาดในการดึงข้อมูลจากโครงข่ายแม่ข่าย';
+                if (dbStatusBadge) {
+                    dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200";
+                    dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-red-500"></span><span>การเชื่อมต่อล้มเหลว</span>';
+                }
+                initIcons();
+            }
+        };
+
+        // --- Search Filtering and Intelligent Scoring ---
         const handleSearch = async () => {
             const query = searchInput.value.toLowerCase().trim();
             const descQuery = descSearchInput.value.toLowerCase().trim();
@@ -610,6 +710,7 @@
                 initialState.classList.remove('hidden');
                 initialState.classList.add('flex');
                 resultCount.textContent = '0';
+                resultCountBottom.textContent = '0';
                 return;
             }
 
@@ -617,29 +718,12 @@
             initialState.classList.remove('flex');
             emptyState.classList.add('hidden');
 
+            // Force Fetch DB if memory represents empty array
             if (allData.length === 0) {
-                resultsTableWrapper.classList.add('hidden');
-                paginationWrapper.classList.add('hidden');
-                loadingState.classList.remove('hidden');
-                loadingState.classList.add('flex');
-
-                try {
-                    const response = await fetch(SCRIPT_URL);
-                    const responseData = await response.json();
-                    allData = Array.isArray(responseData) ? responseData : responseData.data;
-                    loadingState.classList.add('hidden');
-                    loadingState.classList.remove('flex');
-                } catch (error) {
-                    loadingState.querySelector('i').setAttribute('data-lucide', 'x-circle');
-                    loadingState.querySelector('i').classList.remove('animate-spin', 'text-carrier-lightblue');
-                    loadingState.querySelector('i').classList.add('text-red-500');
-                    loadingState.querySelector('p').innerHTML = 'เกิดข้อผิดพลาดในการดึงข้อมูล<br>โปรดตรวจสอบ URL';
-                    initIcons();
-                    return; 
-                }
+                await fetchDatabase();
             }
 
-            // 1. กรองเบื้องต้น (Primary Search: รุ่น, รหัส, ซีรีส์ และ ประเภท)
+            // 1. Base Filter (Model, Code, Series, Type)
             let baseFilteredData = allData.filter(item => {
                 let matchText = true;
                 if(query !== '') {
@@ -651,7 +735,7 @@
                 return matchText && matchType;
             });
 
-            // 2. กรองด้วยชื่อ Description (ชื่ออะไหล่)
+            // 2. Secondary Filter (Description / Sparepart designation)
             let finalFilteredData = baseFilteredData;
             
             if (descQuery !== '') {
@@ -660,7 +744,7 @@
                            (item.partNo && item.partNo.toLowerCase().includes(descQuery));
                 });
 
-                // 3. ระบบ Fallback: ถ้าระบุชื่อแล้ว "ไม่พบ" ข้อมูลเลย ให้ถอนการกรองชื่อแล้วแสดงทั้งหมดของรุ่นนั้นๆ
+                // Fallback: If description query yields 0 rows, show everything for that model/code
                 if (descFilteredData.length > 0) {
                     finalFilteredData = descFilteredData;
                 } else {
@@ -670,21 +754,20 @@
 
             currentFilteredData = finalFilteredData;
 
-            // จัดเรียงข้อมูล (Smart Sorting) ให้รหัสตรงเป๊ะ ขึ้นก่อนเสมอ
+            // 3. Intelligent Scoring
             const sortQuery = query !== '' ? query : descQuery; 
             
             currentFilteredData.sort((a, b) => {
-                // 1. ถ้ามีคำค้นหา ให้จัดเรียงตาม Score ความแม่นยำก่อน
                 if (sortQuery !== '') {
                     const getScore = (item) => {
                         const model = (item.model || '').toLowerCase();
                         const partNo = (item.partNo || '').toLowerCase();
                         const desc = (item.description || '').toLowerCase();
                         
-                        // 1.1 ตรงกันเป๊ะ (Exact Match)
+                        // Exact match
                         if (model === sortQuery || partNo === sortQuery || desc === sortQuery) return 1;
                         
-                        // 1.2 ขึ้นต้นด้วยคำค้นหา (Starts With)
+                        // Starts with query
                         const modelStartsWith = model.startsWith(sortQuery);
                         const partNoStartsWith = partNo.startsWith(sortQuery);
                         const descStartsWith = desc.startsWith(sortQuery);
@@ -697,9 +780,8 @@
                             return 2 + (minLen * 0.001); 
                         }
                         
-                        // 1.3 มีคำค้นหาอยู่ตรงกลาง (Contains)
+                        // Contains query
                         if (model.includes(sortQuery) || partNo.includes(sortQuery) || desc.includes(sortQuery)) return 3;
-                        
                         return 4;
                     };
 
@@ -711,12 +793,12 @@
                     }
                 }
 
-                // 2. จัดเรียง Type โดยให้ FCU มาก่อน CDU เสมอ
+                // Type prioritizing: FCU first, CDU second
                 const getTypeScore = (type) => {
                     const t = (type || '').toUpperCase().trim();
                     if (t === 'FCU') return 1;
                     if (t === 'CDU') return 2;
-                    return 3; // อื่นๆ หรือค่าว่าง ไว้ล่างสุด
+                    return 3;
                 };
 
                 const typeScoreA = getTypeScore(a.fcu_cdu);
@@ -726,11 +808,11 @@
                     return typeScoreA - typeScoreB;
                 }
 
-                // 3. ถ้า Type เดียวกัน ให้เรียงตามชื่อ Model
                 return (a.model || '').localeCompare(b.model || '');
             });
 
             resultCount.textContent = currentFilteredData.length;
+            resultCountBottom.textContent = currentFilteredData.length;
             currentPage = 1; 
             renderTablePage();
             initIcons();
@@ -752,34 +834,53 @@
             initialState.classList.add('hidden');
             initialState.classList.remove('flex');
             
+            if (dbStatusBadge) {
+                dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200";
+                dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span><span>กำลังดึงข้อมูลล่าสุด...</span>';
+            }
+
             loadingState.classList.remove('hidden');
             loadingState.classList.add('flex');
-            loadingState.querySelector('p').innerHTML = 'กำลังดึงข้อมูลล่าสุด...';
+            loadingState.querySelector('p').innerHTML = 'กำลังอัปเดตข้อมูลอะไหล่จากคลังหลักล่าสุด...';
 
             try {
                 const response = await fetch(SCRIPT_URL);
                 const responseData = await response.json();
                 allData = Array.isArray(responseData) ? responseData : responseData.data;
+                
                 loadingState.classList.add('hidden');
                 loadingState.classList.remove('flex');
                 
                 initialState.classList.remove('hidden');
                 initialState.classList.add('flex');
                 resultCount.textContent = '0';
+                resultCountBottom.textContent = '0';
+                
+                if (dbStatusBadge) {
+                    dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>ปรับปรุงฐานข้อมูลสำเร็จ</span>';
+                }
                 loadingState.querySelector('p').innerHTML = 'กำลังเชื่อมต่อฐานข้อมูล...';
             } catch (error) {
                 loadingState.querySelector('i').setAttribute('data-lucide', 'x-circle');
                 loadingState.querySelector('i').classList.remove('animate-spin', 'text-carrier-lightblue');
                 loadingState.querySelector('i').classList.add('text-red-500');
-                loadingState.querySelector('p').innerHTML = 'เกิดข้อผิดพลาดในการดึงข้อมูลจากชีท<br><span class="text-xs text-slate-400">โปรดตรวจสอบ URL หรืออินเทอร์เน็ต</span>';
+                loadingState.querySelector('p').innerHTML = 'เกิดข้อผิดพลาดในการเชื่อมโยง อัปเดตล้มเหลว';
+                if (dbStatusBadge) {
+                    dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200";
+                    dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-red-500"></span><span>อัปเดตผิดพลาด</span>';
+                }
                 initIcons();
             }
         };
 
-        // --- Event Listeners ---
-        // ช่องค้นหาหลัก
-        searchInput.addEventListener('input', (e) => { e.target.value.length > 0 ? clearBtn.classList.remove('hidden') : clearBtn.classList.add('hidden'); });
-        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
+        // --- Event Listeners and Micro-Interactions ---
+        searchInput.addEventListener('input', (e) => { 
+            e.target.value.length > 0 ? clearBtn.classList.remove('hidden') : clearBtn.classList.add('hidden'); 
+        });
+        searchInput.addEventListener('keypress', (e) => { 
+            if (e.key === 'Enter') handleSearch(); 
+        });
         clearBtn.addEventListener('click', () => {
             searchInput.value = '';
             clearBtn.classList.add('hidden');
@@ -787,9 +888,12 @@
             searchInput.focus();
         });
 
-        // ช่องค้นหา Description
-        descSearchInput.addEventListener('input', (e) => { e.target.value.length > 0 ? clearDescBtn.classList.remove('hidden') : clearDescBtn.classList.add('hidden'); });
-        descSearchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
+        descSearchInput.addEventListener('input', (e) => { 
+            e.target.value.length > 0 ? clearDescBtn.classList.remove('hidden') : clearDescBtn.classList.add('hidden'); 
+        });
+        descSearchInput.addEventListener('keypress', (e) => { 
+            if (e.key === 'Enter') handleSearch(); 
+        });
         clearDescBtn.addEventListener('click', () => {
             descSearchInput.value = '';
             clearDescBtn.classList.add('hidden');
@@ -801,7 +905,7 @@
         typeFilter.addEventListener('change', handleSearch);
         refreshBtn.addEventListener('click', handleRefresh);
 
-        // เมื่อแอดมินเปลี่ยน % ส่วนลด ให้คำนวณราคาใหม่ทันที
+        // Real-time calculation when typing discount values
         discountInput.addEventListener('input', () => {
             if (currentFilteredData.length > 0) renderTablePage();
         });
