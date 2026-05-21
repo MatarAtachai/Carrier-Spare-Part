@@ -174,10 +174,10 @@
 
                 <!-- Table -->
                 <div id="resultsTableWrapper" class="overflow-x-auto border border-slate-200 rounded-xl hidden mb-4">
-                    <table class="w-full text-left border-collapse min-w-[1100px]">
+                    <table class="w-full text-left border-collapse min-w-[1200px]">
                         <thead>
                             <tr class="bg-slate-100 border-b border-slate-200">
-                                <th colspan="11" class="p-4 font-bold text-center text-carrier-blue text-base md:text-lg uppercase tracking-wide">
+                                <th colspan="12" class="p-4 font-bold text-center text-carrier-blue text-base md:text-lg uppercase tracking-wide">
                                     บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด
                                 </th>
                             </tr>
@@ -190,12 +190,14 @@
                                 <th class="p-3 font-semibold">Series Name</th>
                                 <th class="p-3 font-semibold">Model</th>
                                 <th class="p-3 font-semibold text-center">Type</th>
-                                <!-- Admin Column 1: ราคาทุน /69 (อยู่หลัง Type) -->
-                                <th class="admin-only p-3 font-semibold text-right bg-orange-50/50 text-orange-800 border-l border-orange-100">ราคาทุน /69</th>
-                                <!-- Admin Column 2: ราคาหลังหักส่วนลด (สลับมาอยู่หลัง ราคาทุน /69 ทันที) -->
-                                <th class="admin-only p-3 font-semibold text-right bg-orange-50 text-orange-800 border-r border-orange-100">ราคาหลังหักส่วนลด</th>
-                                <!-- Price_2026 แสดงอยู่ท้ายสุด -->
-                                <th class="p-3 font-semibold text-right">Price_2026</th>
+                                <!-- Admin Column 1: ราคาทุน (ปี 2569) -->
+                                <th class="admin-only p-3 font-semibold text-right bg-slate-100 text-slate-700 border-l border-slate-200">ราคาทุน (ปี 2569)</th>
+                                <!-- Admin Column 2: ราคาทุน (ปี 2569) + 120% -->
+                                <th class="admin-only p-3 font-semibold text-right bg-blue-100 text-blue-800 border-l border-blue-200">ราคาทุน (ปี 2569) + 120%</th>
+                                <!-- Admin Column 3: ราคาหลังหักส่วนลด -->
+                                <th class="admin-only p-3 font-semibold text-right bg-emerald-100 text-emerald-800 border-l border-emerald-200">ราคาหลังหักส่วนลด</th>
+                                <!-- Column สำหรับทุกคน: PRICE_2026 (ดึงจากคอลัมน์ K และสิทธิ์ Dealer สามารถมองเห็นได้) -->
+                                <th class="p-3 font-semibold text-right text-slate-700 border-l border-slate-200">PRICE_2026</th>
                             </tr>
                         </thead>
                         <tbody id="resultsTableBody" class="divide-y divide-slate-100 text-sm">
@@ -440,7 +442,7 @@
         // --- เช็ค Part No ข้ามรุ่น ---
         window.showModelsForPart = (partNo) => {
             if(!partNo || partNo === '-') return;
-            partModalTitle.textContent = `รุ่นที่ใชอะไหล่: ${partNo}`;
+            partModalTitle.textContent = `รุ่นที่ใช้อะไหล่: ${partNo}`;
             const matchingItems = allData.filter(item => item.partNo === partNo);
             if(matchingItems.length === 0) {
                  partModalContent.innerHTML = `<p class="text-slate-500 text-center py-8">ไม่พบข้อมูลรุ่นอื่นที่ใช้อะไหล่นี้</p>`;
@@ -487,11 +489,13 @@
             const imgEPRAT = item.imageUrlEPRAT ? item.imageUrlEPRAT : fallbackEPRAT;
             const typeBadgeColor = item.fcu_cdu === 'FCU' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-orange-50 text-orange-700 border-orange-200';
 
-            // คำนวณราคาส่วนลดโดยใช้: (ราคาทุน * 120%) เป็นฐานเริ่มต้น และนำไปลบเปอร์เซ็นต์ส่วนลด
             const discountPercent = parseFloat(discountInput.value) || 0;
             const cost = item.costPrice || 0;
-            const basePriceForDiscount = (cost * 1.2) + cost; 
-            // ปัดเศษขึ้นเสมอ (Roundup) เช่น 479.75 เป็น 480
+            
+            // คำนวณราคาตั้งต้น: ราคาทุน + 120% (นำราคาทุนคูณ 120% แล้วบวกกับราคาทุนเดิม)
+            const basePriceForDiscount = cost + (cost * 1.2); 
+            
+            // ปัดเศษขึ้นเสมอ (Roundup) สำหรับราคาหลังหักส่วนลด
             const discountedPrice = Math.ceil(basePriceForDiscount * (1 - (discountPercent / 100)));
 
             return `
@@ -517,13 +521,16 @@
                     <td class="p-2 align-middle text-slate-600">${item.model || '-'}</td>
                     <td class="p-2 align-middle text-center"><span class="px-2 py-1 ${typeBadgeColor} text-xs rounded border font-medium">${item.fcu_cdu || '-'}</span></td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 1: ราคาทุน -->
-                    <td class="admin-only p-3 align-middle font-medium text-orange-700 text-right bg-orange-50/30 border-l border-orange-100">${item.costPrice > 0 ? formatPrice(item.costPrice) : '-'}</td>
+                    <!-- ข้อมูลลับเฉพาะ Admin 1: ราคาทุน (ปี 2569) เป็นสีเทาอ่อน -->
+                    <td class="admin-only p-3 align-middle font-medium text-slate-600 text-right bg-slate-50 border-l border-slate-200">${item.costPrice > 0 ? formatPrice(item.costPrice) : '-'}</td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 2: ราคาหลังหักส่วนลด (คำนวณจาก ราคาทุน * 120% หักด้วยส่วนลด) -->
-                    <td class="admin-only p-3 align-middle font-bold text-red-600 text-right bg-orange-50/60 border-r border-orange-100">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
+                    <!-- ข้อมูลลับเฉพาะ Admin 2: ราคาทุน (ปี 2569) + 120% เป็นสีฟ้าอ่อน -->
+                    <td class="admin-only p-3 align-middle font-medium text-blue-700 text-right bg-blue-50/50 border-l border-blue-200">${item.costPrice > 0 ? formatPrice(basePriceForDiscount) : '-'}</td>
+                    
+                    <!-- ข้อมูลลับเฉพาะ Admin 3: ราคาหลังหักส่วนลด เป็นสีเขียวและตัวอักษรใหญ่ขึ้น -->
+                    <td class="admin-only p-3 align-middle font-bold text-emerald-700 text-right bg-emerald-50/80 border-l border-emerald-200 text-base">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
 
-                    <!-- ราคาแนะนำ Price_2026 (เปิดเป็น All-Role สามารถมองเห็นได้ทุกคน) -->
+                    <!-- ราคาแนะนำ PRICE_2026 (เปิดเป็น All-Role สามารถมองเห็นได้ทุกคน ดึงมาจากคอลัมน์ K) -->
                     <td class="p-3 align-middle font-bold text-carrier-blue text-right text-base">${item.price ? formatPrice(item.price) : '-'}</td>
                 </tr>
             `;
