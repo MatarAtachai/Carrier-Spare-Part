@@ -426,18 +426,26 @@
             handleSearch();
         };
 
+        // ฟังก์ชันช่วยแปลงรหัสเพื่อซ่อน (Obfuscation) ไม่ให้เห็นเป็นข้อความตรงๆ ใน F12
+        const verifyAuth = (input, codeArray) => {
+            return input === String.fromCharCode(...codeArray);
+        };
+
         // --- Authentication Logic ---
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const user = document.getElementById('username').value.trim().toLowerCase();
             const pass = document.getElementById('password').value.trim();
 
-            if (user === 'admin' && pass === 'Bgrimmcarrier') {
+            // ใช้ Array ของ Character Codes แทนการพิมพ์ Password ตรงๆ เพื่อหลบการอ่านโค้ด
+            if (verifyAuth(user, [97, 100, 109, 105, 110]) && verifyAuth(pass, [66, 103, 114, 105, 109, 109, 99, 97, 114, 114, 105, 101, 114])) {
+                // สิทธิ์ admin
                 loginSuccess('admin', 'Administrator');
-            } else if (user === 'dealercarrier' && pass === 'dealercarrier2026') {
+            } else if (verifyAuth(user, [100, 101, 97, 108, 101, 114, 99, 97, 114, 114, 105, 101, 114]) && verifyAuth(pass, [100, 101, 97, 108, 101, 114, 99, 97, 114, 114, 105, 101, 114, 50, 48, 50, 54])) {
+                // สิทธิ์ dealercarrier
                 loginSuccess('dealer', 'Dealer');
-            } else if (user === 'sparepartcarrier' && pass === 'sparepartcarrier2026') {
-                // เพิ่มสิทธิ์ใหม่สำหรับช่าง/ผู้ใช้ทั่วไป
+            } else if (verifyAuth(user, [115, 112, 97, 114, 101, 112, 97, 114, 116, 99, 97, 114, 114, 105, 101, 114]) && verifyAuth(pass, [115, 112, 97, 114, 101, 112, 97, 114, 116, 99, 97, 114, 114, 105, 101, 114, 50, 48, 50, 54])) {
+                // สิทธิ์ sparepartcarrier
                 loginSuccess('technician', 'Technician');
             } else {
                 loginError.classList.remove('hidden');
