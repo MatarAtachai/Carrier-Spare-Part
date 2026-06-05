@@ -7,7 +7,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     
@@ -53,7 +53,7 @@
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative z-10 text-center border border-white/20">
             <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-14 w-auto mx-auto mb-6 object-contain">
             <h2 class="text-2xl font-bold text-slate-800 mb-2">เข้าสู่ระบบ</h2>
-            <p class="text-slate-500 mb-6 text-sm">ระบบค้นหาราคาและสต็อกอะไหล่สำหรับตัวแทนจำหน่าย</p>
+            <p class="text-slate-500 mb-6 text-sm">ระบบค้นหาราคาและสต็อกอะไหล่สำหรับตัวแทนจำหน่ายและช่าง</p>
             
             <div id="loginError" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-200 text-left">
                 ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
@@ -62,14 +62,14 @@
             <form id="loginForm" class="space-y-4 text-left">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้ (Username)</label>
-                    <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกชื่อผู้ใช้ เช่น dealercarrier" required>
+                    <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกชื่อผู้ใช้" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน (Password)</label>
                     <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกรหัสผ่านของคุณ" required>
                 </div>
                 <button type="submit" class="w-full bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-3 rounded-xl transition-colors mt-2 shadow-lg shadow-blue-500/15">
-                    เข้าสู่ระบบตัวแทนจำหน่าย
+                    เข้าสู่ระบบ
                 </button>
             </form>
             <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
@@ -229,8 +229,8 @@
                                 <th class="admin-only p-3.5 text-right bg-slate-200 text-slate-700 border-l border-slate-300 w-32">ราคาทุน (ปี 2569)</th>
                                 <th class="admin-only p-3.5 text-right bg-blue-100 text-blue-800 border-l border-blue-200 w-40">ราคาทุน + 120%</th>
                                 <th class="admin-only p-3.5 text-right bg-emerald-100 text-emerald-800 border-l border-emerald-200 w-40">ราคาหลังหักส่วนลด</th>
-                                <!-- Public Column -->
-                                <th class="p-3.5 text-right text-slate-800 border-l border-slate-300 bg-slate-200/50 font-bold w-36">PRICE_2026</th>
+                                <!-- Public/Role-based Column -->
+                                <th id="publicPriceHeader" class="p-3.5 text-right text-slate-800 border-l border-slate-300 bg-slate-200/50 font-bold w-36">PRICE_2026 <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span></th>
                             </tr>
                         </thead>
                         <tbody id="resultsTableBody" class="divide-y divide-slate-200 text-xs md:text-sm">
@@ -426,7 +426,7 @@
             handleSearch();
         };
 
-        // --- Authentication Logic (Functionality preserved, Admin credentials kept working) ---
+        // --- Authentication Logic ---
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const user = document.getElementById('username').value.trim().toLowerCase();
@@ -436,6 +436,9 @@
                 loginSuccess('admin', 'Administrator');
             } else if (user === 'dealercarrier' && pass === 'dealercarrier2026') {
                 loginSuccess('dealer', 'Dealer');
+            } else if (user === 'sparepartcarrier' && pass === 'sparepartcarrier2026') {
+                // เพิ่มสิทธิ์ใหม่สำหรับช่าง/ผู้ใช้ทั่วไป
+                loginSuccess('technician', 'Technician');
             } else {
                 loginError.classList.remove('hidden');
             }
@@ -443,13 +446,23 @@
 
         function loginSuccess(role, roleName) {
             currentUserRole = role;
+            const publicPriceHeader = document.getElementById('publicPriceHeader');
+            
             if(role === 'admin') {
                 document.body.classList.add('role-admin');
                 userRoleBadge.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1 text-amber-500 animate-pulse"></i> <span class="text-amber-600">${roleName}</span>`;
-            } else {
+                if(publicPriceHeader) publicPriceHeader.innerHTML = 'PRICE_2026 <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span>';
+            } else if (role === 'dealer') {
                 document.body.classList.remove('role-admin');
                 userRoleBadge.innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5 mr-1 text-carrier-lightblue"></i> <span class="text-slate-600">${roleName}</span>`;
+                if(publicPriceHeader) publicPriceHeader.innerHTML = 'PRICE_2026 <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span>';
+            } else if (role === 'technician') {
+                // สำหรับช่าง ปิดการมองเห็น Admin เสมือน Dealer และปรับชื่อ Header
+                document.body.classList.remove('role-admin');
+                userRoleBadge.innerHTML = `<i data-lucide="wrench" class="w-3.5 h-3.5 mr-1 text-emerald-500"></i> <span class="text-slate-600">${roleName}</span>`;
+                if(publicPriceHeader) publicPriceHeader.innerHTML = 'ราคา (บาท) <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span>';
             }
+            
             userRoleBadge.classList.remove('hidden');
             initIcons();
             
@@ -559,6 +572,19 @@
             // ปัดเศษขึ้นเสมอสำหรับราคาหลังหักส่วนลด
             const discountedPrice = Math.ceil(basePriceForDiscount * (1 - (discountPercent / 100)));
 
+            // ตรวจสอบสิทธิ์เพื่อแสดงผลราคาในคอลัมน์ขวาสุด
+            let finalPriceDisplay = '-';
+            if (currentUserRole === 'technician') {
+                if (cost > 0) {
+                    // สำหรับช่าง: เอาราคาทุน + 120% (ซึ่งก็คือ basePriceForDiscount) มาหักออก 10% (คูณ 0.9)
+                    const technicianPrice = basePriceForDiscount * 0.9;
+                    finalPriceDisplay = formatPrice(Math.ceil(technicianPrice)); // ปัดเศษขึ้น
+                }
+            } else {
+                // สำหรับ Admin / Dealer แสดงผลคอลัมน์ PRICE_2026 ปกติ
+                finalPriceDisplay = item.price ? formatPrice(item.price) : '-';
+            }
+
             return `
                 <tr class="hover:bg-blue-50/40 transition-colors group bg-white border-b border-slate-200">
                     <td class="p-2 align-middle text-center">
@@ -591,8 +617,8 @@
                     <!-- ข้อมูลลับเฉพาะ Admin 3: ราคาหลังหักส่วนลด -->
                     <td class="admin-only p-3 align-middle font-extrabold text-emerald-700 text-right bg-emerald-50/70 border-l border-emerald-200 text-sm md:text-base">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
 
-                    <!-- ราคาสำหรับตัวแทนและทุกคน: PRICE_2026 -->
-                    <td class="p-3 align-middle font-extrabold text-carrier-blue text-right text-sm md:text-base border-l border-slate-150 bg-slate-50/30">${item.price ? formatPrice(item.price) : '-'}</td>
+                    <!-- ราคาสำหรับตัวแทน ช่าง และทุกคน (เปลี่ยนค่าไปตามสิทธิ์ที่ Login) -->
+                    <td class="p-3 align-middle font-extrabold text-carrier-blue text-right text-sm md:text-base border-l border-slate-150 bg-slate-50/30">${finalPriceDisplay}</td>
                 </tr>
             `;
         };
