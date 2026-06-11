@@ -37,8 +37,9 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        /* ซ่อนคอลัมน์แอดมินสำหรับผู้ใช้ทั่วไป */
+        /* ซ่อนคอลัมน์พิเศษตามสิทธิ์การเข้าใช้งาน */
         body:not(.role-admin) .admin-only { display: none !important; }
+        body:not(.role-dealer) .dealer-visible { display: none !important; }
     </style>
 </head>
 <body class="text-slate-800 flex flex-col min-h-screen">
@@ -53,26 +54,26 @@
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative z-10 text-center border border-white/20">
             <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-14 w-auto mx-auto mb-6 object-contain">
             <h2 class="text-2xl font-bold text-slate-800 mb-2">เข้าสู่ระบบ</h2>
-            <p class="text-slate-500 mb-6 text-sm">ระบบค้นหาราคาและสต็อกอะไหล่สำหรับตัวแทนจำหน่ายและช่าง</p>
+            <p class="text-slate-500 mb-6 text-base">ระบบค้นหาราคาและสต็อกอะไหล่สำหรับตัวแทนจำหน่ายและช่าง</p>
             
-            <div id="loginError" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-200 text-left">
+            <div id="loginError" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-base mb-4 border border-red-200 text-left">
                 ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
             </div>
 
             <form id="loginForm" class="space-y-4 text-left">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้ (Username)</label>
-                    <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกชื่อผู้ใช้" required>
+                    <label class="block text-base font-medium text-slate-700 mb-1">ชื่อผู้ใช้ (Username)</label>
+                    <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all text-base" placeholder="กรอกชื่อผู้ใช้" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน (Password)</label>
-                    <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all" placeholder="กรอกรหัสผ่านของคุณ" required>
+                    <label class="block text-base font-medium text-slate-700 mb-1">รหัสผ่าน (Password)</label>
+                    <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-carrier-lightblue focus:border-transparent transition-all text-base" placeholder="กรอกรหัสผ่านของคุณ" required>
                 </div>
-                <button type="submit" class="w-full bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-3 rounded-xl transition-colors mt-2 shadow-lg shadow-blue-500/15">
+                <button type="submit" class="w-full bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-3 rounded-xl transition-colors mt-2 shadow-lg shadow-blue-500/15 text-base">
                     เข้าสู่ระบบ
                 </button>
             </form>
-            <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
+            <div class="mt-6 pt-4 border-t border-slate-100 text-sm text-slate-400">
                 เฉพาะผู้มีสิทธิ์เข้าถึงระบบของ บี.กริม แคเรียร์ เท่านั้น
             </div>
         </div>
@@ -93,22 +94,22 @@
                             <img src="https://carrierthailand.com/wp-content/uploads/2023/02/logo-carrier-2025-2.png" alt="Carrier Logo" class="h-8 md:h-10 w-auto object-contain">
                             <div class="h-8 w-px bg-slate-200 mx-1 md:mx-2"></div>
                             <div class="flex flex-col justify-center">
-                                <span class="text-[10px] md:text-xs font-bold mb-0.5 tracking-wide text-carrier-blue">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</span>
-                                <span class="text-xs md:text-sm font-medium leading-none text-slate-500">ระบบค้นหาราคาอะไหล่แท้</span>
+                                <span class="text-xs md:text-sm font-bold mb-0.5 tracking-wide text-carrier-blue">บริษัท บี.กริม แคเรียร์ (ประเทศไทย) จำกัด</span>
+                                <span class="text-sm md:text-base font-medium leading-none text-slate-500">ระบบค้นหาราคาอะไหล่แท้</span>
                             </div>
                         </a>
                     </div>
                     <div class="flex items-center gap-2 md:gap-4">
                         <!-- Database Connection Status Badge -->
-                        <span id="dbStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                        <span id="dbStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-slate-100 text-slate-600 border border-slate-200">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
                             <span>กำลังรอเชื่อมข้อมูล...</span>
                         </span>
                         
-                        <span id="userRoleBadge" class="hidden md:inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-carrier-blue border border-blue-100"></span>
+                        <span id="userRoleBadge" class="hidden md:inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-blue-50 text-carrier-blue border border-blue-100"></span>
                         
-                        <button id="logoutBtn" class="text-sm font-medium text-slate-600 hover:text-red-600 transition-colors flex items-center gap-1.5 bg-slate-50 hover:bg-red-50 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-200/60">
-                            <i data-lucide="log-out" class="w-4 h-4"></i> <span class="hidden md:inline font-medium">ออกจากระบบ</span>
+                        <button id="logoutBtn" class="text-base font-medium text-slate-600 hover:text-red-600 transition-colors flex items-center gap-1.5 bg-slate-50 hover:bg-red-50 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-200/60">
+                            <i data-lucide="log-out" class="w-5 h-5"></i> <span class="hidden md:inline font-medium">ออกจากระบบ</span>
                         </button>
                     </div>
                 </div>
@@ -121,22 +122,22 @@
                         
                         <!-- Main Search input -->
                         <div class="flex-1 min-w-0 flex items-center px-3.5 bg-white rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-carrier-lightblue focus-within:border-transparent transition-all shadow-sm">
-                            <i data-lucide="search" class="text-slate-400 w-4 h-4 shrink-0"></i>
-                            <input type="text" id="searchInput" placeholder="รุ่น, ซีรีส์ หรือ รหัสอะไหล่..." class="w-full py-2 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm font-normal" autocomplete="off">
-                            <button id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
+                            <i data-lucide="search" class="text-slate-400 w-5 h-5 shrink-0"></i>
+                            <input type="text" id="searchInput" placeholder="รุ่น, ซีรีส์ หรือ รหัสอะไหล่..." class="w-full py-2.5 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-base font-normal" autocomplete="off">
+                            <button id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
                         <!-- Description Search input -->
                         <div class="flex-1 min-w-0 flex items-center px-3.5 bg-white rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-carrier-lightblue focus-within:border-transparent transition-all shadow-sm">
-                            <i data-lucide="file-text" class="text-slate-400 w-4 h-4 shrink-0"></i>
-                            <input type="text" id="descSearchInput" placeholder="ค้นหาชื่ออะไหล่ หรือ Parts Catalog..." class="w-full py-2 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-sm font-normal" autocomplete="off" title="หากไม่พบข้อมูล ระบบจะดึงจากรุ่นปกติให้โดยอัตโนมัติ">
-                            <button id="clearDescBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
+                            <i data-lucide="file-text" class="text-slate-400 w-5 h-5 shrink-0"></i>
+                            <input type="text" id="descSearchInput" placeholder="ค้นหาชื่ออะไหล่ หรือ Parts Catalog..." class="w-full py-2.5 px-3 outline-none text-slate-700 bg-transparent placeholder-slate-400 text-base font-normal" autocomplete="off" title="หากไม่พบข้อมูล ระบบจะดึงจากรุ่นปกติให้โดยอัตโนมัติ">
+                            <button id="clearDescBtn" class="hidden text-slate-400 hover:text-slate-600 p-1 shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
                         </div>
 
                         <!-- Type Selector -->
                         <div class="w-full lg:w-44 flex items-center px-3.5 bg-white rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-carrier-lightblue focus-within:border-transparent transition-all shadow-sm">
-                            <i data-lucide="filter" class="text-slate-400 w-4 h-4 shrink-0"></i>
-                            <select id="typeFilter" class="w-full py-2.5 pl-2 pr-4 outline-none text-slate-600 bg-transparent cursor-pointer font-medium text-sm">
+                            <i data-lucide="filter" class="text-slate-400 w-5 h-5 shrink-0"></i>
+                            <select id="typeFilter" class="w-full py-2.5 pl-2 pr-4 outline-none text-slate-600 bg-transparent cursor-pointer font-medium text-base">
                                 <option value="ALL">ทุกประเภท</option>
                                 <option value="FCU">FCU (คอยล์เย็น)</option>
                                 <option value="CDU">CDU (คอยล์ร้อน)</option>
@@ -145,18 +146,18 @@
 
                         <!-- Discount (Admin only) -->
                         <div class="admin-only w-full lg:w-36 flex items-center bg-orange-50/80 border border-orange-200 px-3.5 rounded-xl focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent transition-all shadow-sm">
-                            <i data-lucide="percent" class="text-orange-500 w-4 h-4 mr-1 shrink-0"></i>
-                            <input type="number" id="discountInput" placeholder="ส่วนลด %" min="0" max="100" value="0" class="w-full py-2 bg-transparent outline-none text-orange-700 font-bold text-center placeholder-orange-300 text-sm" title="กรอกเปอร์เซ็นต์ส่วนลดสำหรับคำนวณราคา">
+                            <i data-lucide="percent" class="text-orange-500 w-5 h-5 mr-1 shrink-0"></i>
+                            <input type="number" id="discountInput" placeholder="ส่วนลด %" min="0" max="100" value="0" class="w-full py-2.5 bg-transparent outline-none text-orange-700 font-bold text-center placeholder-orange-300 text-base" title="กรอกเปอร์เซ็นต์ส่วนลดสำหรับคำนวณราคา">
                         </div>
 
                         <!-- Trigger Buttons -->
                         <div class="flex gap-2">
-                            <button id="searchBtn" class="flex-grow lg:flex-none bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-2 px-6 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-sm">
-                                <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
+                            <button id="searchBtn" class="flex-grow lg:flex-none bg-carrier-lightblue hover:bg-carrier-blue text-white font-medium py-2 px-6 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-base">
+                                <i data-lucide="arrow-right-circle" class="w-5 h-5"></i>
                                 <span>ค้นหา</span>
                             </button>
                             <button id="refreshBtn" class="bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-800 border border-slate-300 font-medium py-2 px-3.5 rounded-xl transition-all flex items-center justify-center group shrink-0 shadow-sm" title="โหลดข้อมูลล่าสุดจากเซิร์ฟเวอร์">
-                                <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i>
+                                <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500"></i>
                             </button>
                         </div>
 
@@ -175,14 +176,14 @@
                         <i data-lucide="layers" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800 leading-tight">คลังข้อมูลผลลัพธ์อะไหล่</h2>
+                        <h2 class="text-xl font-bold text-slate-800 leading-tight">คลังข้อมูลผลลัพธ์อะไหล่</h2>
                     </div>
                 </div>
                 <!-- Interactive Count Indicators -->
                 <div class="flex items-center gap-2">
-                    <span class="text-sm font-medium text-slate-500">พบผลลัพธ์:</span>
-                    <span id="resultCount" class="text-2xl font-black text-carrier-blue px-4 py-1.5 bg-slate-100 rounded-2xl border border-slate-200 leading-none">0</span>
-                    <span class="text-sm font-medium text-slate-500">รายการ</span>
+                    <span class="text-base font-medium text-slate-500">พบผลลัพธ์:</span>
+                    <span id="resultCount" class="text-3xl font-black text-carrier-blue px-4 py-1.5 bg-slate-100 rounded-2xl border border-slate-200 leading-none">0</span>
+                    <span class="text-base font-medium text-slate-500">รายการ</span>
                 </div>
             </div>
 
@@ -191,32 +192,32 @@
                 
                 <!-- States -->
                 <div id="loadingState" class="hidden flex-col items-center justify-center flex-grow py-24">
-                    <i data-lucide="loader-2" class="w-12 h-12 text-carrier-lightblue animate-spin mb-4"></i>
-                    <p class="text-slate-600 font-medium text-center">กำลังเชื่อมต่อและดึงข้อมูลอะไหล่ล่าสุด...</p>
-                    <p class="text-xs text-slate-400 mt-1">กรุณารอสักครู่ ระบบกำลังเรียกเซิร์ฟเวอร์</p>
+                    <i data-lucide="loader-2" class="w-14 h-14 text-carrier-lightblue animate-spin mb-4"></i>
+                    <p class="text-slate-600 font-medium text-center text-lg">กำลังเชื่อมต่อและดึงข้อมูลอะไหล่ล่าสุด...</p>
+                    <p class="text-sm text-slate-400 mt-1">กรุณารอสักครู่ ระบบกำลังเรียกเซิร์ฟเวอร์</p>
                 </div>
                 
                 <div id="initialState" class="flex flex-col items-center justify-center flex-grow py-24 text-center">
-                    <div class="w-20 h-20 bg-blue-50 text-carrier-lightblue rounded-full flex items-center justify-center mb-5 shadow-inner border border-blue-100">
-                        <i data-lucide="search-code" class="w-10 h-10"></i>
+                    <div class="w-24 h-24 bg-blue-50 text-carrier-lightblue rounded-full flex items-center justify-center mb-5 shadow-inner border border-blue-100">
+                        <i data-lucide="search-code" class="w-12 h-12"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">ระบบค้นหาพร้อมใช้งาน</h3>
-                    <p class="text-slate-500 max-w-md text-sm leading-relaxed">กรุณากรอกข้อมูลในช่องค้นหาด้านบน เช่น <b class="text-carrier-blue underline cursor-pointer" onclick="fillSearch('FCU')">FCU</b>, <b class="text-carrier-blue underline cursor-pointer" onclick="fillSearch('CDU')">CDU</b> หรือรุ่นที่ท่านต้องการค้นหา</p>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">ระบบค้นหาพร้อมใช้งาน</h3>
+                    <p class="text-slate-500 max-w-md text-base leading-relaxed">กรุณากรอกข้อมูลในช่องค้นหาด้านบน เช่น <b class="text-carrier-blue underline cursor-pointer" onclick="fillSearch('FCU')">FCU</b>, <b class="text-carrier-blue underline cursor-pointer" onclick="fillSearch('CDU')">CDU</b> หรือรุ่นที่ท่านต้องการค้นหา</p>
                 </div>
 
                 <div id="emptyState" class="hidden flex-col items-center justify-center flex-grow py-24 text-center">
-                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-5 border border-slate-200">
-                        <i data-lucide="package-search" class="w-10 h-10 text-slate-400"></i>
+                    <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-5 border border-slate-200">
+                        <i data-lucide="package-search" class="w-12 h-12 text-slate-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">ไม่พบรายการอะไหล่</h3>
-                    <p class="text-slate-500 max-w-md text-sm">ลองตรวจสอบความถูกต้องของรุ่น ซีรีส์ หรือรหัสอะไหล่อีกครั้ง หรือลบช่องชื่ออะไหล่เพื่อแสดงอะไหล่ทั้งหมดของรุ่นนั้น ๆ</p>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">ไม่พบรายการอะไหล่</h3>
+                    <p class="text-slate-500 max-w-md text-base">ลองตรวจสอบความถูกต้องของรุ่น ซีรีส์ หรือรหัสอะไหล่อีกครั้ง หรือลบช่องชื่ออะไหล่เพื่อแสดงอะไหล่ทั้งหมดของรุ่นนั้น ๆ</p>
                 </div>
 
                 <!-- Responsive Data Table -->
                 <div id="resultsTableWrapper" class="overflow-x-auto hidden">
                     <table class="w-full text-left border-collapse min-w-[1200px]">
                         <thead>
-                            <tr class="bg-slate-100 text-slate-700 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                            <tr class="bg-slate-100 text-slate-700 text-sm font-semibold uppercase tracking-wider border-b border-slate-200">
                                 <th class="p-3.5 text-center w-24 leading-tight">Exploded View<br>Drawing</th>
                                 <th class="p-3.5 text-center w-24">E-PART</th>
                                 <th class="p-3.5 text-center w-16">No.</th>
@@ -225,15 +226,14 @@
                                 <th class="p-3.5">Series Name</th>
                                 <th class="p-3.5">Model</th>
                                 <th class="p-3.5 text-center w-24">Type</th>
-                                <!-- Admin Columns (Visually separated) -->
-                                <th class="admin-only p-3.5 text-right bg-slate-200 text-slate-700 border-l border-slate-300 w-32">ราคาทุน (ปี 2569)</th>
-                                <th class="admin-only p-3.5 text-right bg-blue-100 text-blue-800 border-l border-blue-200 w-40">ราคาทุน + 120%</th>
-                                <th class="admin-only p-3.5 text-right bg-emerald-100 text-emerald-800 border-l border-emerald-200 w-40">ราคาหลังหักส่วนลด</th>
+                                <!-- Admin & Dealer Columns -->
+                                <th class="dealer-visible p-3.5 text-right bg-blue-100 text-blue-800 border-l border-blue-200 w-40 text-sm">ราคาแนะนำขาย <br><span class="text-sm font-normal">(ราคาก่อน Vat)</span></th>
+                                <th class="admin-only p-3.5 text-right bg-emerald-100 text-emerald-800 border-l border-emerald-200 w-40 text-sm">ราคาหลังหักส่วนลด</th>
                                 <!-- Public/Role-based Column -->
-                                <th id="publicPriceHeader" class="p-3.5 text-right text-slate-800 border-l border-slate-300 bg-slate-200/50 font-bold w-36">PRICE_2026 <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span></th>
+                                <th id="publicPriceHeader" class="p-3.5 text-right text-slate-800 border-l border-slate-300 bg-slate-200/50 font-bold w-40 text-sm">PRICE_2026 <br><span class="text-sm font-normal">(ราคาก่อน Vat)</span></th>
                             </tr>
                         </thead>
-                        <tbody id="resultsTableBody" class="divide-y divide-slate-200 text-xs md:text-sm">
+                        <tbody id="resultsTableBody" class="divide-y divide-slate-200 text-base">
                             <!-- JS Injection Rows -->
                         </tbody>
                     </table>
@@ -241,7 +241,7 @@
 
                 <!-- Pagination Footer -->
                 <div id="paginationWrapper" class="hidden mt-auto px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="text-sm text-slate-500">
+                    <div class="text-base text-slate-500">
                         แสดงข้อมูล <span id="pageStartItem" class="font-semibold text-slate-800">0</span> - <span id="pageEndItem" class="font-semibold text-slate-800">0</span> จาก <span id="resultCountBottom" class="font-bold text-carrier-blue">0</span> รายการ
                     </div>
                     <div class="flex items-center gap-1.5" id="paginationButtons">
@@ -366,7 +366,7 @@
         initIcons();
 
         // 🌟 ดึงข้อมูลด้วย URL ล่าสุดจากระบบ Google Sheets ของท่าน 🌟
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyroFAOd3jyOnKq3AGXPrjol1VRC_aWlrqThagdsXCOlESbhXsnMkrrgdIz0W8dM8Pk/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtByfTgOmESoAdv79IEIAxBCgkTAX4eJUHv5QaKZ2AGW3vPnJtrFs15HHCLsOrpTo-/exec'; 
         
         let allData = []; 
         let currentFilteredData = [];
@@ -457,18 +457,19 @@
             const publicPriceHeader = document.getElementById('publicPriceHeader');
             
             if(role === 'admin') {
-                document.body.classList.add('role-admin');
-                userRoleBadge.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1 text-amber-500 animate-pulse"></i> <span class="text-amber-600">${roleName}</span>`;
-                if(publicPriceHeader) publicPriceHeader.innerHTML = 'PRICE_2026 <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span>';
+                document.body.classList.add('role-admin', 'role-dealer');
+                userRoleBadge.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4 mr-1 text-amber-500 animate-pulse"></i> <span class="text-amber-600">${roleName}</span>`;
+                if(publicPriceHeader) publicPriceHeader.innerHTML = 'PRICE_2026 <br><span class="text-sm font-normal">(ราคาก่อน Vat)</span>';
             } else if (role === 'dealer') {
                 document.body.classList.remove('role-admin');
-                userRoleBadge.innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5 mr-1 text-carrier-lightblue"></i> <span class="text-slate-600">${roleName}</span>`;
-                if(publicPriceHeader) publicPriceHeader.innerHTML = 'PRICE_2026 <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span>';
+                document.body.classList.add('role-dealer');
+                userRoleBadge.innerHTML = `<i data-lucide="user" class="w-4 h-4 mr-1 text-carrier-lightblue"></i> <span class="text-slate-600">${roleName}</span>`;
+                if(publicPriceHeader) publicPriceHeader.innerHTML = 'PRICE_2026 <br><span class="text-sm font-normal">(ราคาก่อน Vat)</span>';
             } else if (role === 'technician') {
                 // สำหรับช่าง ปิดการมองเห็น Admin เสมือน Dealer และปรับชื่อ Header
-                document.body.classList.remove('role-admin');
-                userRoleBadge.innerHTML = `<i data-lucide="wrench" class="w-3.5 h-3.5 mr-1 text-emerald-500"></i> <span class="text-slate-600">${roleName}</span>`;
-                if(publicPriceHeader) publicPriceHeader.innerHTML = 'ราคา (บาท) <br><span class="text-xs font-normal">(ราคาก่อน Vat)</span>';
+                document.body.classList.remove('role-admin', 'role-dealer');
+                userRoleBadge.innerHTML = `<i data-lucide="wrench" class="w-4 h-4 mr-1 text-emerald-500"></i> <span class="text-slate-600">${roleName}</span>`;
+                if(publicPriceHeader) publicPriceHeader.innerHTML = 'ราคา (บาท) <br><span class="text-sm font-normal">(ราคาก่อน Vat)</span>';
             }
             
             userRoleBadge.classList.remove('hidden');
@@ -483,7 +484,7 @@
 
         logoutBtn.addEventListener('click', () => {
             currentUserRole = null;
-            document.body.classList.remove('role-admin');
+            document.body.classList.remove('role-admin', 'role-dealer');
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             loginError.classList.add('hidden');
@@ -499,7 +500,7 @@
             clearBtn.classList.add('hidden');
             clearDescBtn.classList.add('hidden');
             if (dbStatusBadge) {
-                dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200";
+                dbStatusBadge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-slate-100 text-slate-600 border border-slate-200";
                 dbStatusBadge.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span><span>กำลังรอเชื่อมข้อมูล...</span>';
             }
             initIcons();
@@ -524,24 +525,24 @@
             const matchingItems = allData.filter(item => item.partNo === partNo);
             
             if(matchingItems.length === 0) {
-                 partModalContent.innerHTML = `<div class="text-slate-500 text-center py-12"><i data-lucide="info" class="w-12 h-12 mx-auto mb-3 text-slate-300"></i> ไม่พบข้อมูลรุ่นเครื่องปรับอากาศเครื่องอื่นที่ใช้อะไหล่ชิ้นนี้</div>`;
+                 partModalContent.innerHTML = `<div class="text-slate-500 text-center py-12"><i data-lucide="info" class="w-14 h-14 mx-auto mb-3 text-slate-300"></i> ไม่พบข้อมูลรุ่นเครื่องปรับอากาศเครื่องอื่นที่ใช้อะไหล่ชิ้นนี้</div>`;
             } else {
-                 let html = `<p class="text-xs md:text-sm text-slate-600 mb-4 bg-blue-50/50 p-3 rounded-xl border border-blue-100/50 font-medium">ตรวจพบคอร์สอบอุ่นร่วมกันทั้งหมด <span class="font-bold text-carrier-blue">${matchingItems.length}</span> รายการที่ใช้งานร่วมกัน</p><ul class="space-y-2.5">`;
+                 let html = `<p class="text-sm md:text-base text-slate-600 mb-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 font-medium">ตรวจพบคอร์สอบอุ่นร่วมกันทั้งหมด <span class="font-bold text-carrier-blue text-lg">${matchingItems.length}</span> รายการที่ใช้งานร่วมกัน</p><ul class="space-y-3">`;
                  const uniqueModels = new Set();
                  matchingItems.forEach(item => {
                      const modelCode = item.model || 'ไม่ระบุชื่อรุ่น';
-                     const seriesInfo = item.seriesName ? `<span class="text-[11px] bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full border border-blue-100 ml-2 font-semibold">${item.seriesName}</span>` : '';
-                     const descInfo = item.description ? `<div class="text-xs text-slate-500 mt-1 pl-7">${item.description}</div>` : '';
+                     const seriesInfo = item.seriesName ? `<span class="text-xs bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full border border-blue-100 ml-2 font-semibold">${item.seriesName}</span>` : '';
+                     const descInfo = item.description ? `<div class="text-sm text-slate-500 mt-1.5 pl-8">${item.description}</div>` : '';
                      const uniqueKey = `${modelCode}-${item.description}`;
                      
                      if(!uniqueModels.has(uniqueKey)) {
                          uniqueModels.add(uniqueKey);
                          html += `
-                            <li class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm hover:border-blue-300 transition-colors">
-                                <div class="flex items-start gap-2.5">
+                            <li class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm hover:border-blue-300 transition-colors">
+                                <div class="flex items-start gap-3">
                                     <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> 
                                     <div class="flex-grow">
-                                        <div class="font-semibold text-slate-800 flex items-center flex-wrap gap-1 text-sm md:text-base">${modelCode} ${seriesInfo}</div>
+                                        <div class="font-semibold text-slate-800 flex items-center flex-wrap gap-1 text-base">${modelCode} ${seriesInfo}</div>
                                         ${descInfo}
                                     </div>
                                 </div>
@@ -561,7 +562,12 @@
             setTimeout(() => { partModal.classList.add('hidden'); }, 300);
         };
 
-        const formatPrice = (price) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(price);
+        const formatPrice = (price) => new Intl.NumberFormat('th-TH', { 
+            style: 'currency', 
+            currency: 'THB',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0 
+        }).format(price);
 
         // --- Render Table Dynamic Row ---
         const createTableRow = (item) => {
@@ -574,8 +580,8 @@
             const discountPercent = parseFloat(discountInput.value) || 0;
             const cost = item.costPrice || 0;
             
-            // คำนวณราคาตั้งต้น: ราคาทุน + 120%
-            const basePriceForDiscount = cost + (cost * 1.2); 
+            // คำนวณราคาตั้งต้น: ราคาทุน + 120% (เพื่อเป็นราคาแนะนำ) และปัดเศษขึ้น
+            const basePriceForDiscount = Math.ceil(cost + (cost * 1.2)); 
             
             // ปัดเศษขึ้นเสมอสำหรับราคาหลังหักส่วนลด
             const discountedPrice = Math.ceil(basePriceForDiscount * (1 - (discountPercent / 100)));
@@ -589,44 +595,41 @@
                     finalPriceDisplay = formatPrice(Math.ceil(technicianPrice)); // ปัดเศษขึ้น
                 }
             } else {
-                // สำหรับ Admin / Dealer แสดงผลคอลัมน์ PRICE_2026 ปกติ
-                finalPriceDisplay = item.price ? formatPrice(item.price) : '-';
+                // สำหรับ Admin / Dealer แสดงผลคอลัมน์ PRICE_2026 ปกติ (ปัดเศษขึ้น)
+                finalPriceDisplay = item.price ? formatPrice(Math.ceil(item.price)) : '-';
             }
 
             return `
                 <tr class="hover:bg-blue-50/40 transition-colors group bg-white border-b border-slate-200">
                     <td class="p-2 align-middle text-center">
-                        <div class="w-14 h-14 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto transition-transform group-hover:scale-105 ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
+                        <div class="w-16 h-16 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto transition-transform group-hover:scale-105 ${item.imageUrlBOM ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
                              ${item.imageUrlBOM ? `onclick="openImageModal('${imgBOM}', 'Exploded View Drawing (No. ${item.no || '-'}): ${item.description}')"` : ''}>
                             <img src="${imgBOM}" alt="Exploded View Drawing" onerror="this.onerror=null; this.src='${fallbackBOM}';" class="w-full h-full object-contain ${!item.imageUrlBOM ? 'opacity-50' : ''}">
                         </div>
                     </td>
                     <td class="p-2 align-middle text-center">
-                        <div class="w-14 h-14 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto transition-transform group-hover:scale-105 ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
+                        <div class="w-16 h-16 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden p-0.5 shadow-sm mx-auto transition-transform group-hover:scale-105 ${item.imageUrlEPRAT ? 'cursor-pointer hover:border-carrier-lightblue' : ''}" 
                              ${item.imageUrlEPRAT ? `onclick="openImageModal('${imgEPRAT}', 'E-PART (No. ${item.no || '-'}): ${item.description}')"` : ''}>
                             <img src="${imgEPRAT}" alt="E-PART" onerror="this.onerror=null; this.src='${fallbackEPRAT}';" class="w-full h-full object-contain ${!item.imageUrlEPRAT ? 'opacity-50' : ''}">
                         </div>
                     </td>
-                    <td class="p-2 align-middle text-center"><span class="text-slate-500 font-semibold text-xs">${item.no || '-'}</span></td>
-                    <td class="p-2 align-middle font-bold text-carrier-lightblue">
+                    <td class="p-2 align-middle text-center"><span class="text-slate-500 font-semibold text-sm">${item.no || '-'}</span></td>
+                    <td class="p-2 align-middle font-bold text-carrier-lightblue text-base">
                         ${item.partNo ? `<button onclick="showModelsForPart('${item.partNo}')" class="hover:underline hover:text-carrier-blue transition-colors text-left text-blue-600 focus:outline-none flex items-center gap-1 font-semibold" title="คลิกเพื่อดูรุ่นอะไหล่ร่วม">${item.partNo}</button>` : '-'}
                     </td>
-                    <td class="p-2 align-middle text-slate-800 font-normal leading-snug">${item.description || '-'}</td>
-                    <td class="p-2 align-middle text-slate-600 text-xs">${item.seriesName || '-'}</td>
-                    <td class="p-2 align-middle text-slate-700 text-xs font-medium">${item.model || '-'}</td>
-                    <td class="p-2 align-middle text-center"><span class="px-2.5 py-0.5 ${typeBadgeColor} text-[10px] rounded-full border font-bold">${item.fcu_cdu || '-'}</span></td>
+                    <td class="p-2 align-middle text-slate-800 font-normal leading-snug text-base">${item.description || '-'}</td>
+                    <td class="p-2 align-middle text-slate-600 text-sm">${item.seriesName || '-'}</td>
+                    <td class="p-2 align-middle text-slate-700 text-sm font-medium">${item.model || '-'}</td>
+                    <td class="p-2 align-middle text-center"><span class="px-3 py-1.5 ${typeBadgeColor} text-xs rounded-full border font-bold">${item.fcu_cdu || '-'}</span></td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 1: ราคาทุน -->
-                    <td class="admin-only p-3 align-middle font-medium text-slate-600 text-right bg-slate-50 border-l border-slate-200">${item.costPrice > 0 ? formatPrice(item.costPrice) : '-'}</td>
+                    <!-- ข้อมูลราคาแนะนำ (Admin, Dealer) -->
+                    <td class="dealer-visible p-3 align-middle font-medium text-blue-700 text-right bg-blue-50/40 border-l border-blue-200 text-base">${item.costPrice > 0 ? formatPrice(basePriceForDiscount) : '-'}</td>
                     
-                    <!-- ข้อมูลลับเฉพาะ Admin 2: ราคาทุน + 120% -->
-                    <td class="admin-only p-3 align-middle font-medium text-blue-700 text-right bg-blue-50/40 border-l border-blue-200">${item.costPrice > 0 ? formatPrice(basePriceForDiscount) : '-'}</td>
-                    
-                    <!-- ข้อมูลลับเฉพาะ Admin 3: ราคาหลังหักส่วนลด -->
-                    <td class="admin-only p-3 align-middle font-extrabold text-emerald-700 text-right bg-emerald-50/70 border-l border-emerald-200 text-sm md:text-base">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
+                    <!-- ข้อมูลราคาหลังหักส่วนลด (Admin เท่านั้น) -->
+                    <td class="admin-only p-3 align-middle font-extrabold text-emerald-700 text-right bg-emerald-50/70 border-l border-emerald-200 text-base md:text-lg">${item.costPrice > 0 ? formatPrice(discountedPrice) : '-'}</td>
 
                     <!-- ราคาสำหรับตัวแทน ช่าง และทุกคน (เปลี่ยนค่าไปตามสิทธิ์ที่ Login) -->
-                    <td class="p-3 align-middle font-extrabold text-carrier-blue text-right text-sm md:text-base border-l border-slate-150 bg-slate-50/30">${finalPriceDisplay}</td>
+                    <td class="p-3 align-middle font-extrabold text-carrier-blue text-right text-base md:text-lg border-l border-slate-150 bg-slate-50/30">${finalPriceDisplay}</td>
                 </tr>
             `;
         };
